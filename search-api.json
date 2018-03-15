@@ -1,0 +1,228 @@
+{
+  "openapi": "3.0.0",
+  "servers": [],
+  "info": {
+    "version": "0.0.1",
+    "title": "MUIR Middle-tier Generic Search API",
+    "contact": {}
+  },
+  "paths": {
+    "_note": "{pluralType} is just a placeholder, not a real parameter",
+    "/{pluralType}/search": {
+      "post": {
+        "description": "Search through all objects of type `{type}`, returning matching items",
+        "parameters": [
+          {
+            "name": "pluralType",
+            "in": "path",
+            "description": "Plural type of object",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResults"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/{pluralType}/facets": {
+      "post": {
+        "description": "Search through all objects of type `{type}`, returning all available search facets with values",
+        "parameters": [
+          {
+            "name": "pluralType",
+            "in": "path",
+            "description": "Plural type of object",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchFacets"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "security": [],
+  "components": {
+    "links": {},
+    "callbacks": {},
+    "schemas": {
+      "SearchRequest": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "qtext": {
+            "type": "string"
+          },
+          "activeConstraints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActiveFacet"
+            }
+          },
+          "query": {
+            "$ref": "#/components/schemas/SearchQuery"
+          }
+        }
+      },
+      "ActiveFacet": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+      },
+      "SearchQuery": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+      },
+      "SearchResults": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "total": {
+            "type": "integer"
+          },
+          "start": {
+            "type": "integer"
+          },
+          "pageLength": {
+            "type": "integer"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchResult"
+            }
+          }
+        }
+      },
+      "SearchResult": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "uri": {
+            "type": "string"
+          },
+          "matches": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SearchFacets": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "facets": {
+            "type": "object",
+            "properties": {
+              "*": {
+                "$ref": "#/components/schemas/SearchFacet"
+              }
+            }
+          }
+        }
+      },
+      "SearchFacet": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          },
+          "order": {
+            "type": "string",
+            "enum": [
+              "frequency-order",
+              "item-order"
+            ]
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "ascending",
+              "descending"
+            ]
+          },
+          "facetValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FacetValue"
+            }
+          }
+        }
+      },
+      "FacetValue": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "securitySchemes": {}
+  }
+}

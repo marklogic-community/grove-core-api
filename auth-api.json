@@ -1,0 +1,121 @@
+{
+  "openapi": "3.0.0",
+  "servers": [],
+  "info": {
+    "version": "0.0.1",
+    "title": "MUIR Middle-tier Authentication API",
+    "contact": {}
+  },
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "description": "Authenticate credentials, and open new user session.\n",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "description": "Login name.",
+                    "type": "string"
+                  },
+                  "password": {
+                    "description": "Login password.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ],
+                "example": "username=string&password=string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfile"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "description": "Flush user session associated with current browser",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/auth/profile": {
+      "get": {
+        "description": "View profile of user in current session",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfile"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "security": [],
+  "components": {
+    "links": {},
+    "callbacks": {},
+    "schemas": {
+      "UserProfile": {
+        "type": "object",
+        "required": [
+          "username"
+        ],
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "fullname": {
+            "type": "string"
+          },
+          "emails": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "example": {
+          "username": "string",
+          "fullname": "string",
+          "emails": ["string"]
+        }
+      }
+    },
+    "securitySchemes": {}
+  }
+}
