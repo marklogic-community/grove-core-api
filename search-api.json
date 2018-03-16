@@ -125,9 +125,9 @@
               "type": "string"
             }
           }, {
-            "in" : "query",
             "name" : "start",
-            "description" : "result to start on for pagination",
+            "in" : "query",
+            "description" : "The index of the first result to return. The first result is index 1. Default: 1.",
             "schema" : {
               "type" : "integer",
               "format" : "int32",
@@ -135,9 +135,9 @@
             },
             "required" : false
           }, {
-            "in" : "query",
             "name" : "pageLength",
-            "description" : "maximum number of results to return",
+            "in" : "query",
+            "description" : "The maximum number of results to return in this request. Default: 10.",
             "schema" : {
               "type" : "integer",
               "format" : "int32",
