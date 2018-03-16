@@ -2,15 +2,19 @@
   "openapi": "3.0.0",
   "servers": [],
   "info": {
+    "description" : "This defines the baseline for middleTier-to-frontEnd Generic Search APIs for MarkLogic-UI-Resources (MUIR).",
     "version": "0.0.1",
     "title": "MUIR Middle-tier Generic Search API",
-    "contact": {}
+    "license" : {
+      "name" : "Apache-2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
   },
   "paths": {
     "_note": "{pluralType} is just a placeholder, not a real parameter",
     "/{pluralType}/search": {
       "post": {
-        "description": "Search through all objects of type `{type}`, returning matching items",
+        "description": "Search through all objects of type `{type}`, returning all available search facets with values as well as matching items",
         "parameters": [
           {
             "name": "pluralType",
@@ -20,6 +24,26 @@
             "schema": {
               "type": "string"
             }
+          }, {
+            "in" : "query",
+            "name" : "start",
+            "description" : "result to start on for pagination",
+            "schema" : {
+              "type" : "integer",
+              "format" : "int32",
+              "minimum" : 1
+            },
+            "required" : false
+          }, {
+            "in" : "query",
+            "name" : "pageLength",
+            "description" : "maximum number of results to return",
+            "schema" : {
+              "type" : "integer",
+              "format" : "int32",
+              "minimum" : 1
+            },
+            "required" : false
           }
         ],
         "requestBody": {
@@ -37,7 +61,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SearchResults"
+                  "$ref": "#/components/schemas/SearchFacetsAndResults"
                 }
               }
             }
@@ -48,7 +72,7 @@
         }
       }
     },
-    "/{pluralType}/facets": {
+    "/{pluralType}/search/facets": {
       "post": {
         "description": "Search through all objects of type `{type}`, returning all available search facets with values",
         "parameters": [
@@ -87,6 +111,66 @@
           }
         }
       }
+    },
+    "/{pluralType}/search/results": {
+      "post": {
+        "description": "Search through all objects of type `{type}`, returning matching items",
+        "parameters": [
+          {
+            "name": "pluralType",
+            "in": "path",
+            "description": "Plural type of object",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }, {
+            "in" : "query",
+            "name" : "start",
+            "description" : "result to start on for pagination",
+            "schema" : {
+              "type" : "integer",
+              "format" : "int32",
+              "minimum" : 1
+            },
+            "required" : false
+          }, {
+            "in" : "query",
+            "name" : "pageLength",
+            "description" : "maximum number of results to return",
+            "schema" : {
+              "type" : "integer",
+              "format" : "int32",
+              "minimum" : 1
+            },
+            "required" : false
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResults"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
     }
   },
   "security": [],
@@ -98,13 +182,13 @@
         "type": "object",
         "required": [],
         "properties": {
-          "qtext": {
+          "queryText": {
             "type": "string"
           },
           "activeConstraints": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ActiveFacet"
+              "$ref": "#/components/schemas/ActiveConstraint"
             }
           },
           "query": {
@@ -112,19 +196,73 @@
           }
         }
       },
-      "ActiveFacet": {
+      "ActiveConstraint": {
+        "description": "`and` and `or` property are mutually exclusive",
         "type": "object",
         "required": [],
-        "properties": {}
+        "properties" : {
+          "and" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "or" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        },
+        "example" : {
+          "eyeColor" : {
+            "or" : [ "blue", "brown" ]
+          },
+          "age" : {
+            "and" : [ 21 ]
+          }
+        }
       },
       "SearchQuery": {
         "type": "object",
-        "required": [],
-        "properties": {}
+        "properties": {},
+        "required": []
+      },
+      "SearchFacetsAndResults": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer"
+          },
+          "start": {
+            "type": "integer"
+          },
+          "pageLength": {
+            "type": "integer"
+          },
+          "facets": {
+            "type": "object",
+            "properties": {
+              "*": {
+                "$ref": "#/components/schemas/SearchFacet"
+              }
+            }
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchResult"
+            }
+          }
+        },
+        "required": [
+          "total",
+          "facets",
+          "results"
+        ]
       },
       "SearchResults": {
         "type": "object",
-        "required": [],
         "properties": {
           "total": {
             "type": "integer"
@@ -141,13 +279,16 @@
               "$ref": "#/components/schemas/SearchResult"
             }
           }
-        }
+        },
+        "required": [
+          "total",
+          "results"
+        ]
       },
       "SearchResult": {
         "type": "object",
-        "required": [],
         "properties": {
-          "uri": {
+          "id": {
             "type": "string"
           },
           "matches": {
@@ -156,11 +297,13 @@
               "type": "string"
             }
           }
-        }
+        },
+        "required": [
+          "id"
+        ]
       },
       "SearchFacets": {
         "type": "object",
-        "required": [],
         "properties": {
           "facets": {
             "type": "object",
@@ -170,11 +313,13 @@
               }
             }
           }
-        }
+        },
+        "required": [
+          "facets"
+        ]
       },
       "SearchFacet": {
         "type": "object",
-        "required": [],
         "properties": {
           "label": {
             "type": "string"
@@ -205,11 +350,13 @@
               "$ref": "#/components/schemas/FacetValue"
             }
           }
-        }
+        },
+        "required": [
+          "facetValues"
+        ]
       },
       "FacetValue": {
         "type": "object",
-        "required": [],
         "properties": {
           "label": {
             "type": "string"
@@ -220,7 +367,11 @@
           "count": {
             "type": "integer"
           }
-        }
+        },
+        "required": [
+          "name",
+          "count"
+        ]
       }
     },
     "securitySchemes": {}

@@ -2,9 +2,13 @@
   "openapi": "3.0.0",
   "servers": [],
   "info": {
+    "description" : "This defines the baseline for middleTier-to-frontEnd Authentication APIs for MarkLogic-UI-Resources (MUIR).",
     "version": "0.0.1",
     "title": "MUIR Middle-tier Authentication API",
-    "contact": {}
+    "license" : {
+      "name" : "Apache-2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
   },
   "paths": {
     "/auth/login": {

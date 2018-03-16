@@ -2,9 +2,13 @@
   "openapi": "3.0.0",
   "servers": [],
   "info": {
+    "description" : "This defines the baseline for middleTier-to-frontEnd Generic CRUD APIs for MarkLogic-UI-Resources (MUIR).",
     "version": "0.0.1",
     "title": "MUIR Middle-tier Generic CRUD API",
-    "contact": {}
+    "license" : {
+      "name" : "Apache-2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
   },
   "paths": {
     "_note": "{type} is just a placeholder, not a real parameter",
