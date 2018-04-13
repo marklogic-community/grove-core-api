@@ -13,11 +13,11 @@
   "paths": {
     "/auth/login": {
       "post": {
-        "description": "Authenticate credentials, and open new user session.\n",
+        "description": "Authenticate credentials, and open new user session.",
         "parameters": [],
         "requestBody": {
           "content": {
-            "application/x-www-form-urlencoded": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -34,24 +34,60 @@
                   "username",
                   "password"
                 ],
-                "example": "username=string&password=string"
+                "example": {
+                  "username": "string",
+                  "password": "string"
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Ok",
+            "description": "Reponse at successful login",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserProfile"
+                  "$ref": "#/components/schemas/SessionStatus"
                 }
               }
             }
           },
+          "400": {
+            "description": "Response when credentials are missing"
+          },
           "401": {
-            "description": "Unauthorized"
+            "description": "Response when credentials are invalid"
+          },
+          "406": {
+            "description": "Response when client doesn't Accept JSON"
+          },
+          "415": {
+            "description": "Response when client didn't send JSON"
+          }
+        }
+      },
+      "get": {
+        "description": "GET not allowed on login.",
+        "responses": {
+          "405": {
+            "description": "Method Not Allowed"
+          }
+        }
+      },
+      "put": {
+        "description": "PUT not allowed on login.",
+        "responses": {
+          "405": {
+            "description": "Method Not Allowed"
+          }
+        }
+      },
+      "delete": {
+        "description": "DELETE not allowed on login.",
+        "responses": {
+          "405": {
+            "description": "Method Not Allowed"
           }
         }
       }
@@ -65,11 +101,35 @@
             "description": "No Content"
           }
         }
+      },
+      "get": {
+        "description": "GET not allowed on logout.",
+        "responses": {
+          "405": {
+            "description": "Method Not Allowed"
+          }
+        }
+      },
+      "put": {
+        "description": "PUT not allowed on logout.",
+        "responses": {
+          "405": {
+            "description": "Method Not Allowed"
+          }
+        }
+      },
+      "delete": {
+        "description": "DELETE not allowed on login.",
+        "responses": {
+          "405": {
+            "description": "Method Not Allowed"
+          }
+        }
       }
     },
-    "/auth/profile": {
+    "/auth/status": {
       "get": {
-        "description": "View profile of user in current session",
+        "description": "Verify session status",
         "parameters": [],
         "responses": {
           "200": {
@@ -77,7 +137,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserProfile"
+                  "$ref": "#/components/schemas/SessionStatus"
                 }
               }
             }
