@@ -191,6 +191,26 @@
             "description": "Unauthorized"
           }
         }
+      },
+      "post": {
+        "description": "Update profile of the current user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserProfile"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successfully updated profile of current user"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
       }
     }
   },
