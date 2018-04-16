@@ -44,7 +44,7 @@
         },
         "responses": {
           "200": {
-            "description": "Reponse at successful login",
+            "description": "Response at successful login",
             "content": {
               "application/json": {
                 "schema": {
@@ -146,6 +146,51 @@
             "description": "Unauthorized"
           }
         }
+      },
+      "post": {
+        "description": "POST not allowed on status.",
+        "responses": {
+          "405": {
+            "description": "Method Not Allowed"
+          }
+        }
+      },
+      "put": {
+        "description": "PUT not allowed on status.",
+        "responses": {
+          "405": {
+            "description": "Method Not Allowed"
+          }
+        }
+      },
+      "delete": {
+        "description": "DELETE not allowed on status.",
+        "responses": {
+          "405": {
+            "description": "Method Not Allowed"
+          }
+        }
+      }
+    },
+    "/auth/profile": {
+      "get": {
+        "description": "Profile of the current user",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response with current user profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfile"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
       }
     }
   },
@@ -154,6 +199,20 @@
     "links": {},
     "callbacks": {},
     "schemas": {
+      "SessionStatus": {
+        "type": "object",
+        "required": [
+          "authenticated"
+        ],
+        "properties": {
+          "appName": {
+            "type": "string"
+          },
+          "authenticated": {
+            "type": "boolean"
+          }
+        }
+      },
       "UserProfile": {
         "type": "object",
         "required": [
