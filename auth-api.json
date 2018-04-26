@@ -211,6 +211,22 @@
             "description": "Unauthorized"
           }
         }
+      },
+      "put": {
+        "description": "PUT not allowed on profile.",
+        "responses": {
+          "405": {
+            "description": "Method Not Allowed"
+          }
+        }
+      },
+      "delete": {
+        "description": "DELETE not allowed on profile.",
+        "responses": {
+          "405": {
+            "description": "Method Not Allowed"
+          }
+        }
       }
     }
   },
@@ -231,6 +247,9 @@
           "authenticated": {
             "type": "boolean"
           }
+        },
+        "example": {
+          "authenticated": "boolean"
         }
       },
       "UserProfile": {
