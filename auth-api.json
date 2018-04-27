@@ -190,6 +190,9 @@
           "401": {
             "description": "Unauthorized"
           },
+          "404": {
+            "description": "Current user has no profile yet"
+          },
           "406": {
             "description": "Response when client doesn't Accept JSON"
           }
