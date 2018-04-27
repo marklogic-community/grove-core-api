@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description" : "This defines the baseline for middleTier-to-frontEnd Authentication APIs for MarkLogic-UI-Resources (MUIR).",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "title": "MUIR Middle-tier Authentication API",
     "license" : {
       "name" : "Apache-2.0",
