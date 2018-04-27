@@ -142,8 +142,8 @@
               }
             }
           },
-          "401": {
-            "description": "Unauthorized"
+          "406": {
+            "description": "Response when client doesn't Accept JSON"
           }
         }
       },
@@ -189,6 +189,9 @@
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "406": {
+            "description": "Response when client doesn't Accept JSON"
           }
         }
       },
@@ -204,11 +207,17 @@
           }
         },
         "responses": {
+          "201": {
+            "description": "Successfully created profile of current user (if didn't exist yet)"
+          },
           "204": {
-            "description": "Successfully updated profile of current user"
+            "description": "Successfully updated profile of current user (if existed already)"
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "415": {
+            "description": "Response when client didn't send JSON"
           }
         }
       },
