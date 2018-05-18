@@ -2,48 +2,58 @@
   "openapi": "3.0.0",
   "servers": [],
   "info": {
-    "description" : "This defines the baseline for middleTier-to-frontEnd Generic Search APIs for MarkLogic-UI-Resources (MUIR).",
-    "version": "0.0.1",
+    "description": "This defines the baseline for middleTier-to-frontEnd Generic Search APIs for MarkLogic-UI-Resources (MUIR).",
+    "version": "0.0.2",
     "title": "MUIR Middle-tier Generic Search API",
-    "license" : {
-      "name" : "Apache-2.0",
-      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    "license": {
+      "name": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
   "paths": {
-    "_note": "{pluralType} is just a placeholder, not a real parameter",
-    "/{pluralType}/search": {
+    "/search": {
       "post": {
-        "description": "Search through all objects of type `{type}`, returning all available search facets with values as well as matching items",
+        "description": "Search all entities, returning all available search facets with values as well as matching items. The definition of entity is up to the application.",
         "parameters": [
           {
-            "name": "pluralType",
-            "in": "path",
-            "description": "Plural type of object",
-            "required": true,
+            "name": "type",
+            "in": "query",
+            "description": "Type of object to search, which may have meaning for a specific application.",
             "schema": {
               "type": "string"
-            }
-          }, {
-            "in" : "query",
-            "name" : "start",
-            "description" : "result to start on for pagination",
-            "schema" : {
-              "type" : "integer",
-              "format" : "int32",
-              "minimum" : 1
             },
-            "required" : false
-          }, {
-            "in" : "query",
-            "name" : "pageLength",
-            "description" : "maximum number of results to return",
-            "schema" : {
-              "type" : "integer",
-              "format" : "int32",
-              "minimum" : 1
+            "required": false
+          },
+          {
+            "name": "namedOptions",
+            "in": "query",
+            "description": "The name of saved search options to use in the search.",
+            "schema": {
+              "type": "string"
             },
-            "required" : false
+            "required": false
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "result to start on for pagination",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            },
+            "required": false
+          },
+          {
+            "name": "pageLength",
+            "in": "query",
+            "description": "maximum number of results to return",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 10
+            },
+            "required": false
           }
         ],
         "requestBody": {
@@ -72,7 +82,7 @@
         }
       }
     },
-    "/{pluralType}/search/facets": {
+    "/search/facets": {
       "post": {
         "description": "Search through all objects of type `{type}`, returning all available search facets with values",
         "parameters": [
@@ -112,7 +122,7 @@
         }
       }
     },
-    "/{pluralType}/search/results": {
+    "/search/results": {
       "post": {
         "description": "Search through all objects of type `{type}`, returning matching items",
         "parameters": [
@@ -124,26 +134,28 @@
             "schema": {
               "type": "string"
             }
-          }, {
-            "name" : "start",
-            "in" : "query",
-            "description" : "The index of the first result to return. The first result is index 1. Default: 1.",
-            "schema" : {
-              "type" : "integer",
-              "format" : "int32",
-              "minimum" : 1
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "The index of the first result to return. The first result is index 1. Default: 1.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
             },
-            "required" : false
-          }, {
-            "name" : "pageLength",
-            "in" : "query",
-            "description" : "The maximum number of results to return in this request. Default: 10.",
-            "schema" : {
-              "type" : "integer",
-              "format" : "int32",
-              "minimum" : 1
+            "required": false
+          },
+          {
+            "name": "pageLength",
+            "in": "query",
+            "description": "The maximum number of results to return in this request. Default: 10.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
             },
-            "required" : false
+            "required": false
           }
         ],
         "requestBody": {
@@ -180,53 +192,130 @@
     "schemas": {
       "SearchRequest": {
         "type": "object",
-        "required": [],
         "properties": {
           "queryText": {
             "type": "string"
           },
           "activeConstraints": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ActiveConstraint"
-            }
+            "$ref": "#/components/schemas/ActiveConstraints"
           },
           "query": {
             "$ref": "#/components/schemas/SearchQuery"
           }
         }
       },
-      "ActiveConstraint": {
-        "description": "`and` and `or` property are mutually exclusive",
+      "ActiveConstraints": {
+        "description": "A map from defined constraint names to ConstraintValues.",
         "type": "object",
-        "required": [],
-        "properties" : {
-          "and" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "or" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
+        "additionalProperties": {
+          "$ref": "#/components/schemas/ConstraintValue"
         },
-        "example" : {
-          "eyeColor" : {
-            "or" : [ "blue", "brown" ]
+        "example": {
+          "firstName": "Patrick",
+          "active": true,
+          "eyeColor": {
+            "or": [
+              "blue",
+              "brown"
+            ]
           },
-          "age" : {
-            "and" : [ 21 ]
+          "age": {
+            "and": [
+              21,
+              22
+            ]
+          },
+          "lastName": {
+            "not": "Stewart"
+          },
+          "occupationCategory": {
+            "or": [
+              "software",
+              {
+                "and": [
+                  "IT",
+                  {
+                    "not": {
+                      "or": [
+                        "marketing",
+                        "support"
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
           }
         }
       },
+      "ConstraintValue": {
+        "description": "A combined type, which could be a selected atomic value, or some combination of AND, OR, and NOT, allowing for recursive structures.",
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "$ref": "#/components/schemas/AndConstraint"
+          },
+          {
+            "$ref": "#/components/schemas/OrConstraint"
+          },
+          {
+            "$ref": "#/components/schemas/NotConstraint"
+          }
+        ]
+      },
+      "AndConstraint": {
+        "description": "A constraint representing an AND between ConstraintValues.",
+        "type": "object",
+        "properties": {
+          "and": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConstraintValue"
+            }
+          }
+        },
+        "required": [
+          "and"
+        ]
+      },
+      "OrConstraint": {
+        "description": "A constraint representing an OR between ConstraintValues.",
+        "type": "object",
+        "properties": {
+          "or": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConstraintValue"
+            }
+          }
+        },
+        "required": [
+          "or"
+        ]
+      },
+      "NotConstraint": {
+        "description": "A negation of one ConstraintValue",
+        "type": "object",
+        "properties": {
+          "not": {
+            "$ref": "#/components/schemas/ConstraintValue"
+          }
+        },
+        "required": [
+          "not"
+        ]
+      },
       "SearchQuery": {
         "type": "object",
-        "properties": {},
-        "required": []
+        "properties": {}
       },
       "SearchFacetsAndResults": {
         "type": "object",
