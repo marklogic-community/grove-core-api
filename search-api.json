@@ -218,7 +218,13 @@
             "$ref": "#/components/schemas/NearFilter"
           },
           {
-            "$ref": "#/components/schemas/TypedFilter"
+            "$ref": "#/components/schemas/SelectionFilter"
+          },
+          {
+            "$ref": "#/components/schemas/RangeFilter"
+          },
+          {
+            "$ref": "#/components/schemas/QueryTextFilter"
           }
         ],
         "example": {
@@ -305,6 +311,14 @@
       "TypedFilter": {
         "description": "A combined type, which could be a selected atomic value, or some combination of AND, OR, and NOT, allowing for recursive structures.",
         "type": "object",
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "selection": "#/components/schemas/SelectionFilter",
+            "range": "#/components/schemas/RangeFilter",
+            "queryText": "#/components/schemas/QueryTextFilter"
+          }
+        },
         "properties": {
           "type": {
             "type": "string"
@@ -320,6 +334,174 @@
         "required": [
           "type",
           "value"
+        ]
+      },
+      "SelectionFilter": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TypedFilter"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "default": "and",
+                "enum": [
+                  "and",
+                  "or"
+                ]
+              },
+              "value": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "$ref": "#/components/schemas/NegatedSelection"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "$ref": "#/components/schemas/NegatedSelection"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "NegatedSelection": {
+        "type": "object",
+        "properties": {
+          "not": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "required": [
+          "not"
+        ]
+      },
+      "RangeFilter": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TypedFilter"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "object",
+                "properties": {
+                  "gt": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "ge": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "lt": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "le": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "eq": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "ne": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "QueryTextFilter": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TypedFilter"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "string"
+              }
+            }
+          }
         ]
       },
       "AndFilter": {
