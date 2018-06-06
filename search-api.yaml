@@ -145,7 +145,7 @@ components:
           type: object
           additionalProperties: true
     CombinedFilter:
-      description: A recursive structure relating FilterValues to Constraints.
+      description: A recursive structure of filters.
       oneOf:
         - $ref: '#/components/schemas/AndFilter'
         - $ref: '#/components/schemas/OrFilter'
@@ -200,8 +200,8 @@ components:
               distance: 10
     TypedFilter:
       description: >-
-        A combined type, which could be a selected atomic value, or some
-        combination of AND, OR, and NOT, allowing for recursive structures.
+        A parent type for all typed filters, which are not recursive, and which
+        connect values to constraints, according to typed semantic.
       type: object
       discriminator:
         propertyName: type
@@ -221,6 +221,17 @@ components:
         - type
         - value
     SelectionFilter:
+      description: >-
+        A filter connecting discrete selected values to a constraint. Values can
+        optionally be negated.
+      example:
+        type: selection
+        constraint: classification
+        mode: or
+        value:
+          - not: mammal
+          - platypus
+          - kangaroo
       allOf:
         - $ref: '#/components/schemas/TypedFilter'
         - type: object
@@ -245,6 +256,7 @@ components:
                       - $ref: '#/components/schemas/NegatedSelection'
                 - $ref: '#/components/schemas/NegatedSelection'
     NegatedSelection:
+      description: A helper type showing a simple negated selection.
       type: object
       properties:
         not:
@@ -255,6 +267,11 @@ components:
       required:
         - not
     RangeFilter:
+      description: >-
+        A filter connecting a range of selected values to a constraint. Allows
+        operators `gt` (greater-than), `ge` (greater-than-or-equal-to), `lt`
+        (less-than), `le` (less-than-or-equal-to), `eq` (equal-to), and `ne`
+        (not-equal-to).
       allOf:
         - $ref: '#/components/schemas/TypedFilter'
         - type: object
@@ -286,13 +303,23 @@ components:
                   oneOf:
                     - type: string
                     - type: number
+      example:
+        type: range
+        constraint: age
+        value:
+          ge: 21
+          lt: 30
     QueryTextFilter:
+      description: A filter representing query text.
       allOf:
         - $ref: '#/components/schemas/TypedFilter'
         - type: object
           properties:
             value:
               type: string
+      example:
+        type: queryText
+        value: foo AND bar
     AndFilter:
       description: A filter representing an AND between child filters.
       type: object
