@@ -550,16 +550,20 @@
         "description": "A filter representing a NEAR between child filters.",
         "type": "object",
         "properties": {
-          "left": {
-            "$ref": "#/components/schemas/CombinedFilter"
-          },
-          "right": {
-            "$ref": "#/components/schemas/CombinedFilter"
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CombinedFilter"
+            }
           },
           "distance": {
-            "type": "number"
+            "type": "number",
+            "default": 10
           }
-        }
+        },
+        "required": [
+          "filters"
+        ]
       },
       "SearchFacetsAndResults": {
         "type": "object",
