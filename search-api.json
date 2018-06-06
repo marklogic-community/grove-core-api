@@ -193,73 +193,18 @@
       "SearchRequest": {
         "type": "object",
         "properties": {
-          "queryText": {
-            "type": "string"
-          },
           "filters": {
-            "$ref": "#/components/schemas/Filters"
+            "$ref": "#/components/schemas/CombinedFilter"
           },
-          "query": {
-            "$ref": "#/components/schemas/SearchQuery"
+          "options": {
+            "type": "object",
+            "additionalProperties": true
           }
         }
       },
-      "Filters": {
-        "description": "A map from Constraint names to FilterValues. There is an implicit AND between them",
-        "type": "object",
-        "additionalProperties": {
-          "$ref": "#/components/schemas/FilterValue"
-        },
-        "example": {
-          "firstName": "Patrick",
-          "active": true,
-          "eyeColor": {
-            "or": [
-              "blue",
-              "brown"
-            ]
-          },
-          "age": {
-            "and": [
-              21,
-              22
-            ]
-          },
-          "lastName": {
-            "not": "Stewart"
-          },
-          "occupationCategory": {
-            "or": [
-              "software",
-              {
-                "and": [
-                  "IT",
-                  {
-                    "not": {
-                      "or": [
-                        "marketing",
-                        "support"
-                      ]
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        }
-      },
-      "FilterValue": {
-        "description": "A combined type, which could be a selected atomic value, or some combination of AND, OR, and NOT, allowing for recursive structures.",
+      "CombinedFilter": {
+        "description": "A recursive structure relating FilterValues to Constraints.",
         "oneOf": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "number"
-          },
-          {
-            "type": "boolean"
-          },
           {
             "$ref": "#/components/schemas/AndFilter"
           },
@@ -268,17 +213,123 @@
           },
           {
             "$ref": "#/components/schemas/NotFilter"
+          },
+          {
+            "$ref": "#/components/schemas/NearFilter"
+          },
+          {
+            "$ref": "#/components/schemas/TypedFilter"
           }
+        ],
+        "example": {
+          "and": [
+            {
+              "type": "queryText",
+              "value": "foo AND bar"
+            },
+            {
+              "type": "selection",
+              "constraint": "firstName",
+              "value": [
+                "Geert",
+                {
+                  "not": "Patrick"
+                }
+              ],
+              "mode": "and"
+            },
+            {
+              "type": "selection",
+              "constraint": "active",
+              "value": true
+            },
+            {
+              "type": "range",
+              "constraint": "age",
+              "value": {
+                "ge": 20,
+                "ne": 99
+              }
+            },
+            {
+              "type": "selection",
+              "constraint": "eyeColor",
+              "value": [
+                "blue",
+                "brown"
+              ],
+              "mode": "or"
+            },
+            {
+              "or": [
+                {
+                  "type": "selection",
+                  "constraint": "occupationCategory",
+                  "value": "software"
+                },
+                {
+                  "and": [
+                    {
+                      "type": "selection",
+                      "constraint": "occupationCategory",
+                      "value": "IT"
+                    },
+                    {
+                      "not": {
+                        "or": [
+                          "marketing",
+                          "support"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "near": {
+                "left": {
+                  "type": "queryText",
+                  "value": "Patrick"
+                },
+                "right": {
+                  "type": "queryText",
+                  "value": "McElwee"
+                },
+                "distance": 10
+              }
+            }
+          ]
+        }
+      },
+      "TypedFilter": {
+        "description": "A combined type, which could be a selected atomic value, or some combination of AND, OR, and NOT, allowing for recursive structures.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "value": {
+            "$ref": "#/components/schemas/AnyValue"
+          },
+          "constraint": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "type",
+          "value"
         ]
       },
       "AndFilter": {
-        "description": "A filter representing an AND between FilterValues.",
+        "description": "A filter representing an AND between child filters.",
         "type": "object",
         "properties": {
           "and": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/FilterValue"
+              "$ref": "#/components/schemas/CombinedFilter"
             }
           }
         },
@@ -287,13 +338,13 @@
         ]
       },
       "OrFilter": {
-        "description": "A filter representing an OR between FilterValues.",
+        "description": "A filter representing an OR between child filters.",
         "type": "object",
         "properties": {
           "or": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/FilterValue"
+              "$ref": "#/components/schemas/CombinedFilter"
             }
           }
         },
@@ -302,20 +353,31 @@
         ]
       },
       "NotFilter": {
-        "description": "A negation of one FilterValue",
+        "description": "A negation of one child filter.",
         "type": "object",
         "properties": {
           "not": {
-            "$ref": "#/components/schemas/FilterValue"
+            "$ref": "#/components/schemas/CombinedFilter"
           }
         },
         "required": [
           "not"
         ]
       },
-      "SearchQuery": {
+      "NearFilter": {
+        "description": "A filter representing a NEAR between child filters.",
         "type": "object",
-        "properties": {}
+        "properties": {
+          "left": {
+            "$ref": "#/components/schemas/CombinedFilter"
+          },
+          "right": {
+            "$ref": "#/components/schemas/CombinedFilter"
+          },
+          "distance": {
+            "type": "number"
+          }
+        }
       },
       "SearchFacetsAndResults": {
         "type": "object",
@@ -461,7 +523,8 @@
           "name",
           "count"
         ]
-      }
+      },
+      "AnyValue": {}
     },
     "securitySchemes": {}
   }

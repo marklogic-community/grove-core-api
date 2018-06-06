@@ -1,0 +1,350 @@
+openapi: 3.0.0
+servers: []
+info:
+  description: >-
+    This defines the baseline for middleTier-to-frontEnd Generic Search APIs for
+    MarkLogic-UI-Resources (MUIR).
+  version: 0.0.2
+  title: MUIR Middle-tier Generic Search API
+  license:
+    name: Apache-2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+paths:
+  /search:
+    post:
+      description: >-
+        Search all entities, returning all available search facets with values
+        as well as matching items. The definition of entity is up to the
+        application.
+      parameters:
+        - name: type
+          in: query
+          description: >-
+            Type of object to search, which may have meaning for a specific
+            application.
+          schema:
+            type: string
+          required: false
+        - name: namedOptions
+          in: query
+          description: The name of saved search options to use in the search.
+          schema:
+            type: string
+          required: false
+        - name: start
+          in: query
+          description: result to start on for pagination
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          required: false
+        - name: pageLength
+          in: query
+          description: maximum number of results to return
+          schema:
+            type: integer
+            minimum: 1
+            default: 10
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchFacetsAndResults'
+        '401':
+          description: Unauthorized
+  /search/facets:
+    post:
+      description: >-
+        Search through all objects of type `{type}`, returning all available
+        search facets with values
+      parameters:
+        - name: pluralType
+          in: path
+          description: Plural type of object
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchFacets'
+        '401':
+          description: Unauthorized
+  /search/results:
+    post:
+      description: 'Search through all objects of type `{type}`, returning matching items'
+      parameters:
+        - name: pluralType
+          in: path
+          description: Plural type of object
+          required: true
+          schema:
+            type: string
+        - name: start
+          in: query
+          description: >-
+            The index of the first result to return. The first result is index
+            1. Default: 1.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+          required: false
+        - name: pageLength
+          in: query
+          description: >-
+            The maximum number of results to return in this request. Default:
+            10.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResults'
+        '401':
+          description: Unauthorized
+security: []
+components:
+  links: {}
+  callbacks: {}
+  schemas:
+    SearchRequest:
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/CombinedFilter'
+        options:
+          type: object
+          additionalProperties: true
+    CombinedFilter:
+      description: A recursive structure relating FilterValues to Constraints.
+      oneOf:
+        - $ref: '#/components/schemas/AndFilter'
+        - $ref: '#/components/schemas/OrFilter'
+        - $ref: '#/components/schemas/NotFilter'
+        - $ref: '#/components/schemas/NearFilter'
+        - $ref: '#/components/schemas/TypedFilter'
+      example:
+        and:
+          - type: queryText
+            value: foo AND bar
+          - type: selection
+            constraint: firstName
+            value:
+              - Geert
+              - not: Patrick
+            mode: and
+          - type: selection
+            constraint: active
+            value: true
+          - type: range
+            constraint: age
+            value:
+              ge: 20
+              ne: 99
+          - type: selection
+            constraint: eyeColor
+            value:
+              - blue
+              - brown
+            mode: or
+          - or:
+              - type: selection
+                constraint: occupationCategory
+                value: software
+              - and:
+                  - type: selection
+                    constraint: occupationCategory
+                    value: IT
+                  - not:
+                      or:
+                        - marketing
+                        - support
+          - near:
+              left:
+                type: queryText
+                value: Patrick
+              right:
+                type: queryText
+                value: McElwee
+              distance: 10
+    TypedFilter:
+      description: >-
+        A combined type, which could be a selected atomic value, or some
+        combination of AND, OR, and NOT, allowing for recursive structures.
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          $ref: '#/components/schemas/AnyValue'
+        constraint:
+          type: string
+      additionalProperties: true
+      required:
+        - type
+        - value
+    AndFilter:
+      description: A filter representing an AND between child filters.
+      type: object
+      properties:
+        and:
+          type: array
+          items:
+            $ref: '#/components/schemas/CombinedFilter'
+      required:
+        - and
+    OrFilter:
+      description: A filter representing an OR between child filters.
+      type: object
+      properties:
+        or:
+          type: array
+          items:
+            $ref: '#/components/schemas/CombinedFilter'
+      required:
+        - or
+    NotFilter:
+      description: A negation of one child filter.
+      type: object
+      properties:
+        not:
+          $ref: '#/components/schemas/CombinedFilter'
+      required:
+        - not
+    NearFilter:
+      description: A filter representing a NEAR between child filters.
+      type: object
+      properties:
+        left:
+          $ref: '#/components/schemas/CombinedFilter'
+        right:
+          $ref: '#/components/schemas/CombinedFilter'
+        distance:
+          type: number
+    SearchFacetsAndResults:
+      type: object
+      properties:
+        total:
+          type: integer
+        start:
+          type: integer
+        pageLength:
+          type: integer
+        facets:
+          type: object
+          properties:
+            '*':
+              $ref: '#/components/schemas/SearchFacet'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResult'
+      required:
+        - total
+        - facets
+        - results
+    SearchResults:
+      type: object
+      properties:
+        total:
+          type: integer
+        start:
+          type: integer
+        pageLength:
+          type: integer
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResult'
+      required:
+        - total
+        - results
+    SearchResult:
+      type: object
+      properties:
+        id:
+          type: string
+        matches:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+    SearchFacets:
+      type: object
+      properties:
+        facets:
+          type: object
+          properties:
+            '*':
+              $ref: '#/components/schemas/SearchFacet'
+      required:
+        - facets
+    SearchFacet:
+      type: object
+      properties:
+        label:
+          type: string
+        limit:
+          type: integer
+        total:
+          type: integer
+        order:
+          type: string
+          enum:
+            - frequency-order
+            - item-order
+        direction:
+          type: string
+          enum:
+            - ascending
+            - descending
+        facetValues:
+          type: array
+          items:
+            $ref: '#/components/schemas/FacetValue'
+      required:
+        - facetValues
+    FacetValue:
+      type: object
+      properties:
+        label:
+          type: string
+        name:
+          type: string
+        count:
+          type: integer
+      required:
+        - name
+        - count
+    AnyValue: {}
+  securitySchemes: {}
