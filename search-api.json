@@ -196,19 +196,19 @@
           "queryText": {
             "type": "string"
           },
-          "activeConstraints": {
-            "$ref": "#/components/schemas/ActiveConstraints"
+          "filters": {
+            "$ref": "#/components/schemas/Filters"
           },
           "query": {
             "$ref": "#/components/schemas/SearchQuery"
           }
         }
       },
-      "ActiveConstraints": {
-        "description": "A map from defined constraint names to ConstraintValues.",
+      "Filters": {
+        "description": "A map from Constraint names to FilterValues. There is an implicit AND between them",
         "type": "object",
         "additionalProperties": {
-          "$ref": "#/components/schemas/ConstraintValue"
+          "$ref": "#/components/schemas/FilterValue"
         },
         "example": {
           "firstName": "Patrick",
@@ -248,7 +248,7 @@
           }
         }
       },
-      "ConstraintValue": {
+      "FilterValue": {
         "description": "A combined type, which could be a selected atomic value, or some combination of AND, OR, and NOT, allowing for recursive structures.",
         "oneOf": [
           {
@@ -261,24 +261,24 @@
             "type": "boolean"
           },
           {
-            "$ref": "#/components/schemas/AndConstraint"
+            "$ref": "#/components/schemas/AndFilter"
           },
           {
-            "$ref": "#/components/schemas/OrConstraint"
+            "$ref": "#/components/schemas/OrFilter"
           },
           {
-            "$ref": "#/components/schemas/NotConstraint"
+            "$ref": "#/components/schemas/NotFilter"
           }
         ]
       },
-      "AndConstraint": {
-        "description": "A constraint representing an AND between ConstraintValues.",
+      "AndFilter": {
+        "description": "A filter representing an AND between FilterValues.",
         "type": "object",
         "properties": {
           "and": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ConstraintValue"
+              "$ref": "#/components/schemas/FilterValue"
             }
           }
         },
@@ -286,14 +286,14 @@
           "and"
         ]
       },
-      "OrConstraint": {
-        "description": "A constraint representing an OR between ConstraintValues.",
+      "OrFilter": {
+        "description": "A filter representing an OR between FilterValues.",
         "type": "object",
         "properties": {
           "or": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ConstraintValue"
+              "$ref": "#/components/schemas/FilterValue"
             }
           }
         },
@@ -301,12 +301,12 @@
           "or"
         ]
       },
-      "NotConstraint": {
-        "description": "A negation of one ConstraintValue",
+      "NotFilter": {
+        "description": "A negation of one FilterValue",
         "type": "object",
         "properties": {
           "not": {
-            "$ref": "#/components/schemas/ConstraintValue"
+            "$ref": "#/components/schemas/FilterValue"
           }
         },
         "required": [
