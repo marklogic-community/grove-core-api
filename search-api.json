@@ -535,10 +535,8 @@
           },
           "facets": {
             "type": "object",
-            "properties": {
-              "*": {
-                "$ref": "#/components/schemas/SearchFacet"
-              }
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SearchFacet"
             }
           },
           "results": {
@@ -571,6 +569,9 @@
             "items": {
               "$ref": "#/components/schemas/SearchResult"
             }
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/SearchMetrics"
           }
         },
         "required": [
@@ -581,29 +582,98 @@
       "SearchResult": {
         "type": "object",
         "properties": {
-          "id": {
+          "uri": {
             "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": "number"
+          },
+          "extracted": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string"
+              },
+              "content": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AnyValue"
+                }
+              }
+            }
+          },
+          "fitness": {
+            "type": "number"
+          },
+          "format": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          },
+          "index": {
+            "type": "integer"
           },
           "matches": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "match-text": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "highlight": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "properties"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "path": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "match-text"
+              ]
             }
+          },
+          "mimetype": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number"
           }
         },
         "required": [
-          "id"
-        ]
+          "uri"
+        ],
+        "additionalProperties": true
       },
       "SearchFacets": {
         "type": "object",
         "properties": {
           "facets": {
             "type": "object",
-            "properties": {
-              "*": {
-                "$ref": "#/components/schemas/SearchFacet"
-              }
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SearchFacet"
             }
           }
         },
@@ -614,6 +684,9 @@
       "SearchFacet": {
         "type": "object",
         "properties": {
+          "type": {
+            "type": "string"
+          },
           "label": {
             "type": "string"
           },
@@ -659,12 +732,45 @@
           },
           "count": {
             "type": "integer"
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
           }
         },
         "required": [
           "name",
           "count"
         ]
+      },
+      "SearchMetrics": {
+        "type": "object",
+        "properties": {
+          "extract-resolution-time": {
+            "type": "string"
+          },
+          "facet-resolution-time": {
+            "type": "string"
+          },
+          "query-resolution-time": {
+            "type": "string"
+          },
+          "snippet-resolution-time": {
+            "type": "string"
+          },
+          "total-time": {
+            "type": "string"
+          }
+        }
       },
       "AnyValue": {}
     },
