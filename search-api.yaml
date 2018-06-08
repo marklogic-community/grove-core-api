@@ -16,37 +16,6 @@ paths:
         Search all entities, returning all available search facets with values
         as well as matching items. The definition of entity is up to the
         application.
-      parameters:
-        - name: type
-          in: query
-          description: >-
-            Type of object to search, which may have meaning for a specific
-            application.
-          schema:
-            type: string
-          required: false
-        - name: namedOptions
-          in: query
-          description: The name of saved search options to use in the search.
-          schema:
-            type: string
-          required: false
-        - name: start
-          in: query
-          description: result to start on for pagination
-          schema:
-            type: integer
-            minimum: 1
-            default: 1
-          required: false
-        - name: pageLength
-          in: query
-          description: maximum number of results to return
-          schema:
-            type: integer
-            minimum: 1
-            default: 10
-          required: false
       requestBody:
         content:
           application/json:
@@ -66,13 +35,6 @@ paths:
       description: >-
         Search through all objects of type `{type}`, returning all available
         search facets with values
-      parameters:
-        - name: pluralType
-          in: path
-          description: Plural type of object
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -90,33 +52,6 @@ paths:
   /search/results:
     post:
       description: 'Search through all objects of type `{type}`, returning matching items'
-      parameters:
-        - name: pluralType
-          in: path
-          description: Plural type of object
-          required: true
-          schema:
-            type: string
-        - name: start
-          in: query
-          description: >-
-            The index of the first result to return. The first result is index
-            1. Default: 1.
-          schema:
-            type: integer
-            format: int32
-            minimum: 1
-          required: false
-        - name: pageLength
-          in: query
-          description: >-
-            The maximum number of results to return in this request. Default:
-            10.
-          schema:
-            type: integer
-            format: int32
-            minimum: 1
-          required: false
       requestBody:
         content:
           application/json:
@@ -143,6 +78,17 @@ components:
           $ref: '#/components/schemas/CombinedFilter'
         options:
           type: object
+          properties:
+            start:
+              type: integer
+              description: result to start on for pagination
+              minimum: 1
+              default: 1
+            pageLength:
+              type: integer
+              description: result to start on for pagination
+              minimum: 1
+              default: 10
           additionalProperties: true
     CombinedFilter:
       description: A recursive structure of filters.
