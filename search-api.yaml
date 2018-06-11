@@ -348,12 +348,15 @@ components:
         - results
     SearchResult:
       type: object
+      description: A single search result. Either uri or id is required.
       properties:
         uri:
           type: string
+        id:
+          type: string
         label:
           type: string
-        confidence:
+        score:
           type: number
         extracted:
           type: object
@@ -364,11 +367,7 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/AnyValue'
-        fitness:
-          type: number
         format:
-          type: string
-        href:
           type: string
         index:
           type: integer
@@ -386,7 +385,7 @@ components:
                       properties:
                         highlight:
                           type: string
-                      required: 
+                      required:
                         - properties
               path:
                 type: string
@@ -394,12 +393,9 @@ components:
               - match-text
         mimetype:
           type: string
-        path:
-          type: string
-        score:
-          type: number
       required:
         - uri
+        - id
       additionalProperties: true
     SearchFacets:
       type: object
@@ -457,15 +453,8 @@ components:
     SearchMetrics:
       type: object
       properties:
-        extract-resolution-time: 
-          type: string
-        facet-resolution-time:
-          type: string
-        query-resolution-time:
-          type: string
-        snippet-resolution-time:
-          type: string
         total-time:
           type: string
+      additionalProperties: true
     AnyValue: {}
   securitySchemes: {}
