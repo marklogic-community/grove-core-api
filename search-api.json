@@ -11,9 +11,20 @@
     }
   },
   "paths": {
-    "/search": {
+    "/search/{entityType}": {
       "post": {
         "description": "Search all entities, returning all available search facets with values as well as matching items. The definition of entity is up to the application.",
+        "parameters": [
+          {
+            "name": "entityType",
+            "in": "path",
+            "description": "The entityType against which you are searching. It will typically correspond to a set of searchOptions known to the middle-tier. Convention is to use a pseudo-type of 'all' for generic search-and-discovery applications.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -40,9 +51,20 @@
         }
       }
     },
-    "/search/facets": {
+    "/search/{entityType}/facets": {
       "post": {
         "description": "Search through all objects of type `{type}`, returning all available search facets with values",
+        "parameters": [
+          {
+            "name": "entityType",
+            "in": "path",
+            "description": "The entityType against which you are searching. It will typically correspond to a set of searchOptions known to the middle-tier. Convention is to use a pseudo-type of 'all' for generic search-and-discovery applications.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -69,9 +91,20 @@
         }
       }
     },
-    "/search/results": {
+    "/search/{entityType}/results": {
       "post": {
         "description": "Search through all objects of type `{type}`, returning matching items",
+        "parameters": [
+          {
+            "name": "entityType",
+            "in": "path",
+            "description": "The entityType against which you are searching. It will typically correspond to a set of searchOptions known to the middle-tier. Convention is to use a pseudo-type of 'all' for generic search-and-discovery applications.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
