@@ -11,14 +11,14 @@
     }
   },
   "paths": {
-    "/search/{entityType}": {
+    "/search/{type}": {
       "post": {
         "description": "Search all entities, returning all available search facets with values as well as matching items. The definition of entity is up to the application.",
         "parameters": [
           {
-            "name": "entityType",
+            "name": "type",
             "in": "path",
-            "description": "The entityType against which you are searching. It will typically correspond to a set of searchOptions known to the middle-tier. Convention is to use a pseudo-type of 'all' for generic search-and-discovery applications.",
+            "description": "The type against which you are searching. It will typically correspond to a set of searchOptions known to the middle-tier. Convention is to use a pseudo-type of 'all' for generic search-and-discovery applications.",
             "required": true,
             "schema": {
               "type": "string"
@@ -51,14 +51,14 @@
         }
       }
     },
-    "/search/{entityType}/facets": {
+    "/search/{type}/facets": {
       "post": {
         "description": "Search through all objects of type `{type}`, returning all available search facets with values",
         "parameters": [
           {
-            "name": "entityType",
+            "name": "type",
             "in": "path",
-            "description": "The entityType against which you are searching. It will typically correspond to a set of searchOptions known to the middle-tier. Convention is to use a pseudo-type of 'all' for generic search-and-discovery applications.",
+            "description": "The type against which you are searching. It will typically correspond to a set of searchOptions known to the middle-tier. Convention is to use a pseudo-type of 'all' for generic search-and-discovery applications.",
             "required": true,
             "schema": {
               "type": "string"
@@ -91,14 +91,14 @@
         }
       }
     },
-    "/search/{entityType}/results": {
+    "/search/{type}/results": {
       "post": {
         "description": "Search through all objects of type `{type}`, returning matching items",
         "parameters": [
           {
-            "name": "entityType",
+            "name": "type",
             "in": "path",
-            "description": "The entityType against which you are searching. It will typically correspond to a set of searchOptions known to the middle-tier. Convention is to use a pseudo-type of 'all' for generic search-and-discovery applications.",
+            "description": "The type against which you are searching. It will typically correspond to a set of searchOptions known to the middle-tier. Convention is to use a pseudo-type of 'all' for generic search-and-discovery applications.",
             "required": true,
             "schema": {
               "type": "string"
@@ -583,7 +583,8 @@
           "total",
           "facets",
           "results"
-        ]
+        ],
+        "additionalProperties": true
       },
       "SearchResults": {
         "type": "object",
@@ -610,7 +611,8 @@
         "required": [
           "total",
           "results"
-        ]
+        ],
+        "additionalProperties": true
       },
       "SearchResult": {
         "type": "object",
@@ -705,7 +707,8 @@
         },
         "required": [
           "facets"
-        ]
+        ],
+        "additionalProperties": true
       },
       "SearchFacet": {
         "type": "object",
