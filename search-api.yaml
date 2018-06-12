@@ -4,18 +4,18 @@ info:
   description: >-
     This defines the baseline for middleTier-to-frontEnd Generic Search APIs for
     MarkLogic-UI-Resources (MUIR).
-  version: 0.0.2
+  version: 0.1.0
   title: MUIR Middle-tier Generic Search API
   license:
     name: Apache-2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 paths:
-  /search/{type}:
+  '/search/{type}':
     post:
       description: >-
-        Search all entities, returning all available search facets with values
-        as well as matching items. The definition of entity is up to the
-        application.
+        Search all objects of type `{type}`, returning all available search
+        facets with values as well as matching items. The definition of what the
+        type means is up to the application.
       parameters:
         - name: type
           in: path
@@ -41,11 +41,12 @@ paths:
                 $ref: '#/components/schemas/SearchFacetsAndResults'
         '401':
           description: Unauthorized
-  /search/{type}/facets:
+  '/search/{type}/facets':
     post:
       description: >-
-        Search through all objects of type `{type}`, returning all available
-        search facets with values
+        Search all objects of type `{type}`, returning all available search
+        facets with values. The definition of what the type means is up to the
+        application.
       parameters:
         - name: type
           in: path
@@ -71,9 +72,11 @@ paths:
                 $ref: '#/components/schemas/SearchFacets'
         '401':
           description: Unauthorized
-  /search/{type}/results:
+  '/search/{type}/results':
     post:
-      description: 'Search through all objects of type `{type}`, returning matching items'
+      description: >-
+        Search all objects of type `{type}`, returning matching items. The
+        definition of what the type means is up to the application.
       parameters:
         - name: type
           in: path
@@ -124,7 +127,9 @@ components:
               default: 10
           additionalProperties: true
     CombinedFilter:
-      description: A recursive structure of filters.
+      description: >-
+        A recursive structure of filters, including CustomFilters defined by
+        specific applications.
       oneOf:
         - $ref: '#/components/schemas/AndFilter'
         - $ref: '#/components/schemas/OrFilter'
@@ -133,6 +138,7 @@ components:
         - $ref: '#/components/schemas/SelectionFilter'
         - $ref: '#/components/schemas/RangeFilter'
         - $ref: '#/components/schemas/QueryTextFilter'
+        - $ref: '#/components/schemas/CustomFilter'
       example:
         and:
           - type: queryText
@@ -215,6 +221,9 @@ components:
         - $ref: '#/components/schemas/TypedFilter'
         - type: object
           properties:
+            type:
+              enum:
+                - selection
             mode:
               type: string
               default: and
@@ -222,18 +231,13 @@ components:
                 - and
                 - or
             value:
-              oneOf:
-                - type: number
-                - type: string
-                - type: boolean
-                - type: array
-                  items:
-                    oneOf:
-                      - type: number
-                      - type: string
-                      - type: boolean
-                      - $ref: '#/components/schemas/NegatedSelection'
-                - $ref: '#/components/schemas/NegatedSelection'
+              type: array
+              items:
+                oneOf:
+                  - type: number
+                  - type: string
+                  - type: boolean
+                  - $ref: '#/components/schemas/NegatedSelection'
     NegatedSelection:
       description: A helper type showing a simple negated selection.
       type: object
@@ -255,6 +259,9 @@ components:
         - $ref: '#/components/schemas/TypedFilter'
         - type: object
           properties:
+            type:
+              enum:
+                - range
             value:
               type: object
               properties:
@@ -262,26 +269,32 @@ components:
                   oneOf:
                     - type: string
                     - type: number
+                    - type: boolean
                 ge:
                   oneOf:
                     - type: string
                     - type: number
+                    - type: boolean
                 lt:
                   oneOf:
                     - type: string
                     - type: number
+                    - type: boolean
                 le:
                   oneOf:
                     - type: string
                     - type: number
+                    - type: boolean
                 eq:
                   oneOf:
                     - type: string
                     - type: number
+                    - type: boolean
                 ne:
                   oneOf:
                     - type: string
                     - type: number
+                    - type: boolean
       example:
         type: range
         constraint: age
@@ -294,11 +307,26 @@ components:
         - $ref: '#/components/schemas/TypedFilter'
         - type: object
           properties:
+            type:
+              enum:
+                - queryText
             value:
               type: string
       example:
         type: queryText
         value: foo AND bar
+    CustomFilter:
+      description: 'A new filter type, created as an extension to core MUIR filter types.'
+      allOf:
+        - $ref: '#/components/schemas/TypedFilter'
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - not: selection
+                - not: range
+                - not: queryText
     AndFilter:
       description: A filter representing an AND between child filters.
       type: object
@@ -402,10 +430,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/AnyValue'
-        format:
-          type: string
-        index:
-          type: integer
         matches:
           type: array
           items:
@@ -421,13 +445,11 @@ components:
                         highlight:
                           type: string
                       required:
-                        - properties
+                        - highlight
               path:
                 type: string
             required:
               - match-text
-        mimetype:
-          type: string
       required:
         - uri
         - id
@@ -447,28 +469,13 @@ components:
       properties:
         type:
           type: string
-        label:
-          type: string
-        limit:
-          type: integer
-        total:
-          type: integer
-        order:
-          type: string
-          enum:
-            - frequency-order
-            - item-order
-        direction:
-          type: string
-          enum:
-            - ascending
-            - descending
         facetValues:
           type: array
           items:
             $ref: '#/components/schemas/FacetValue'
       required:
         - facetValues
+      additionalProperties: true
     FacetValue:
       type: object
       properties:
@@ -486,6 +493,7 @@ components:
       required:
         - name
         - count
+        - value
     SearchMetrics:
       type: object
       properties:
