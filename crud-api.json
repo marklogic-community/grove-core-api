@@ -2,19 +2,18 @@
   "openapi": "3.0.0",
   "servers": [],
   "info": {
-    "description" : "This defines the baseline for middleTier-to-frontEnd Generic CRUD APIs for MarkLogic-UI-Resources (MUIR).",
+    "description": "This defines the baseline for middleTier-to-frontEnd Generic CRUD APIs for MarkLogic-UI-Resources (MUIR).",
     "version": "0.0.1",
     "title": "MUIR Middle-tier Generic CRUD API",
-    "license" : {
-      "name" : "Apache-2.0",
-      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    "license": {
+      "name": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
   "paths": {
-    "_note": "{type} is just a placeholder, not a real parameter",
     "/{type}/{id}": {
       "get": {
-        "description": "Get existing object of type `{type}` with id `{id}`.",
+        "description": "Get existing object of type `{type}` with id `{id}`. Types can refer to entities or concepts. Convention is to use the conceptual type `all` to refer to all data in a database.",
         "parameters": [
           {
             "name": "type",
@@ -37,26 +36,22 @@
         ],
         "responses": {
           "200": {
-            "description": "Ok",
+            "description": "The content of an object, represented in JSON.",
             "content": {
               "*/*": {
                 "schema": {
                   "title": "{type}",
                   "type": "object",
-                  "properties": {
-                    "*": {
-                      "type": "*"
-                    }
-                  }
+                  "additionalProperties": true
                 }
               }
             }
           },
-          "404": {
-            "description": "Not Found"
-          },
           "401": {
             "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -87,11 +82,7 @@
             "*/*": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "*": {
-                    "type": "*"
-                  }
-                }
+                "additionalProperties": true
               }
             }
           }
@@ -100,11 +91,11 @@
           "204": {
             "description": "No Content"
           },
-          "404": {
-            "description": "Not Found"
-          },
           "401": {
             "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -135,11 +126,7 @@
             "*/*": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "*": {
-                    "type": "*"
-                  }
-                }
+                "additionalProperties": true
               }
             }
           }
@@ -148,11 +135,11 @@
           "201": {
             "description": "Created"
           },
-          "409": {
-            "description": "Conflict"
-          },
           "401": {
             "description": "Unauthorized"
+          },
+          "409": {
+            "description": "Conflict"
           }
         }
       },
@@ -182,11 +169,11 @@
           "204": {
             "description": "No Content"
           },
-          "404": {
-            "description": "Not Found"
-          },
           "401": {
             "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
