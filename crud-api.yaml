@@ -10,7 +10,7 @@ info:
     name: Apache-2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 paths:
-  '/{type}/{id}':
+  '/crud/{type}/{id}':
     get:
       description: >-
         Get existing object of type `{type}` with id `{id}`. Types can refer to entities or concepts. Convention is to use the conceptual type `all` to refer to all data in a database.
