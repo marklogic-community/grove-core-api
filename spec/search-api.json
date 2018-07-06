@@ -46,7 +46,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "../common/responses.json#/Responses/Unauthorized"
           }
         }
       }
@@ -86,7 +86,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "../common/responses.json#/Responses/Unauthorized"
           }
         }
       }
@@ -126,7 +126,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "../common/responses.json#/Responses/Unauthorized"
           }
         }
       }

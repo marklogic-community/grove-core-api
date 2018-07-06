@@ -54,16 +54,16 @@
             }
           },
           "400": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "../common/responses.json#/Responses/BadRequest"
           },
           "401": {
-            "$ref": "#/components/responses/Unauthorized"
+            "$ref": "../common/responses.json#/Responses/Unauthorized"
           },
           "406": {
-            "$ref": "#/components/responses/NotAcceptable"
+            "$ref": "../common/responses.json#/Responses/NotAcceptable"
           },
           "415": {
-            "$ref": "#/components/responses/UnsupportedMediaType"
+            "$ref": "../common/responses.json#/Responses/UnsupportedMediaType"
           }
         }
       },
@@ -71,7 +71,7 @@
         "description": "GET not allowed on login.",
         "responses": {
           "405": {
-            "$ref": "#/components/responses/MethodNotAllowed"
+            "$ref": "../common/responses.json#/Responses/MethodNotAllowed"
           }
         }
       },
@@ -79,7 +79,7 @@
         "description": "PUT not allowed on login.",
         "responses": {
           "405": {
-            "$ref": "#/components/responses/MethodNotAllowed"
+            "$ref": "../common/responses.json#/Responses/MethodNotAllowed"
           }
         }
       },
@@ -87,7 +87,7 @@
         "description": "DELETE not allowed on login.",
         "responses": {
           "405": {
-            "$ref": "#/components/responses/MethodNotAllowed"
+            "$ref": "../common/responses.json#/Responses/MethodNotAllowed"
           }
         }
       }
@@ -106,7 +106,7 @@
         "description": "GET not allowed on logout.",
         "responses": {
           "405": {
-            "$ref": "#/components/responses/MethodNotAllowed"
+            "$ref": "../common/responses.json#/Responses/MethodNotAllowed"
           }
         }
       },
@@ -114,7 +114,7 @@
         "description": "PUT not allowed on logout.",
         "responses": {
           "405": {
-            "$ref": "#/components/responses/MethodNotAllowed"
+            "$ref": "../common/responses.json#/Responses/MethodNotAllowed"
           }
         }
       },
@@ -122,7 +122,7 @@
         "description": "DELETE not allowed on login.",
         "responses": {
           "405": {
-            "$ref": "#/components/responses/MethodNotAllowed"
+            "$ref": "../common/responses.json#/Responses/MethodNotAllowed"
           }
         }
       }
@@ -143,7 +143,7 @@
             }
           },
           "406": {
-            "$ref": "#/components/responses/NotAcceptable"
+            "$ref": "../common/responses.json#/Responses/NotAcceptable"
           }
         }
       },
@@ -151,7 +151,7 @@
         "description": "POST not allowed on status.",
         "responses": {
           "405": {
-            "$ref": "#/components/responses/MethodNotAllowed"
+            "$ref": "../common/responses.json#/Responses/MethodNotAllowed"
           }
         }
       },
@@ -159,7 +159,7 @@
         "description": "PUT not allowed on status.",
         "responses": {
           "405": {
-            "$ref": "#/components/responses/MethodNotAllowed"
+            "$ref": "../common/responses.json#/Responses/MethodNotAllowed"
           }
         }
       },
@@ -167,7 +167,7 @@
         "description": "DELETE not allowed on status.",
         "responses": {
           "405": {
-            "$ref": "#/components/responses/MethodNotAllowed"
+            "$ref": "../common/responses.json#/Responses/MethodNotAllowed"
           }
         }
       }
@@ -188,13 +188,13 @@
             }
           },
           "401": {
-            "$ref": "#/components/responses/Unauthorized"
+            "$ref": "../common/responses.json#/Responses/Unauthorized"
           },
           "404": {
-            "$ref": "#/components/responses/NotFound"
+            "$ref": "../common/responses.json#/Responses/NotFound"
           },
           "406": {
-            "$ref": "#/components/responses/NotAcceptable"
+            "$ref": "../common/responses.json#/Responses/NotAcceptable"
           }
         }
       },
@@ -217,10 +217,10 @@
             "description": "Successfully updated profile of current user (if existed already)"
           },
           "401": {
-            "$ref": "#/components/responses/Unauthorized"
+            "$ref": "../common/responses.json#/Responses/Unauthorized"
           },
           "415": {
-            "$ref": "#/components/responses/UnsupportedMediaType"
+            "$ref": "../common/responses.json#/Responses/UnsupportedMediaType"
           }
         }
       },
@@ -228,7 +228,7 @@
         "description": "PUT not allowed on profile.",
         "responses": {
           "405": {
-            "$ref": "#/components/responses/MethodNotAllowed"
+            "$ref": "../common/responses.json#/Responses/MethodNotAllowed"
           }
         }
       },
@@ -236,7 +236,7 @@
         "description": "DELETE not allowed on profile.",
         "responses": {
           "405": {
-            "$ref": "#/components/responses/MethodNotAllowed"
+            "$ref": "../common/responses.json#/Responses/MethodNotAllowed"
           }
         }
       }
@@ -289,94 +289,6 @@
           "emails": [
             "string"
           ]
-        }
-      },
-      "Error": {
-        "type": "object",
-        "properties": {
-          "errorMessage": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "responses": {
-      "Unauthorized": {
-        "description": "The endpoint cannot be reached because the request is not authorized",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            },
-            "example": {
-              "errorMessage": "unauthorized"
-            }
-          }
-        }
-      },
-      "UnsupportedMediaType": {
-        "description": "Response when client didn't send JSON",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            },
-            "example": {
-              "errorMessage": "Unsupported Media Type"
-            }
-          }
-        }
-      },
-      "MethodNotAllowed": {
-        "description": "Method Not Allowed",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            },
-            "example": {
-              "errorMessage": "Method Not Allowed"
-            }
-          }
-        }
-      },
-      "BadRequest": {
-        "description": "Response when credentials are missing",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            },
-            "example": {
-              "errorMessage": "Bad Request"
-            }
-          }
-        }
-      },
-      "NotAcceptable": {
-        "description": "Response when client doesn't Accept JSON",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            },
-            "example": {
-              "errorMessage": "Not Acceptable"
-            }
-          }
-        }
-      },
-      "NotFound": {
-        "description": "Current user has no profile yet",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            },
-            "example": {
-              "errorMessage": "Not Found"
-            }
-          }
         }
       }
     },
