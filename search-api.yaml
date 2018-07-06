@@ -385,10 +385,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SearchResult'
+        metrics:
+          $ref: '#/components/schemas/SearchMetrics'
       required:
         - total
         - facets
         - results
+        - metrics
       additionalProperties: true
     SearchResults:
       type: object
@@ -408,6 +411,7 @@ components:
       required:
         - total
         - results
+        - metrics
       additionalProperties: true
     SearchResult:
       type: object
@@ -461,6 +465,8 @@ components:
           type: object
           additionalProperties:
             $ref: '#/components/schemas/SearchFacet'
+        metrics:
+          $ref: '#/components/schemas/SearchMetrics'
       required:
         - facets
       additionalProperties: true

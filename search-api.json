@@ -624,12 +624,16 @@
             "items": {
               "$ref": "#/components/schemas/SearchResult"
             }
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/SearchMetrics"
           }
         },
         "required": [
           "total",
           "facets",
-          "results"
+          "results",
+          "metrics"
         ],
         "additionalProperties": true
       },
@@ -657,7 +661,8 @@
         },
         "required": [
           "total",
-          "results"
+          "results",
+          "metrics"
         ],
         "additionalProperties": true
       },
@@ -741,6 +746,9 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/SearchFacet"
             }
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/SearchMetrics"
           }
         },
         "required": [
