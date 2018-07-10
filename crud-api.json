@@ -38,18 +38,28 @@
         "responses": {
           "201": {
             "description": "Created",
-            "headers": {
-              "location": {
-                "description": "The server-generated id",
-                "type": "string"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "description": "The server-generated ID.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "example": {
+                    "id": "abc123"
+                  }
+                }
               }
             }
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "409": {
-            "description": "Conflict"
           }
         }
       }
@@ -93,7 +103,7 @@
             "description": "Unauthorized"
           },
           "404": {
-            "description": "Not Found"
+            "description": "ID Not Found"
           }
         }
       },
@@ -137,7 +147,7 @@
             "description": "Unauthorized"
           },
           "404": {
-            "description": "Not Found"
+            "description": "ID Not Found"
           }
         }
       },
@@ -181,7 +191,7 @@
             "description": "Unauthorized"
           },
           "409": {
-            "description": "Conflict"
+            "description": "Conflict: already exists"
           }
         }
       },
@@ -215,7 +225,7 @@
             "description": "Unauthorized"
           },
           "404": {
-            "description": "Not Found"
+            "description": "ID Not Found"
           }
         }
       }
@@ -264,11 +274,14 @@
               }
             }
           },
+          "40": {
+            "description": "Bad Request: unknown view"
+          },
           "401": {
             "description": "Unauthorized"
           },
           "404": {
-            "description": "Not Found"
+            "description": "ID Not Found"
           }
         }
       }
