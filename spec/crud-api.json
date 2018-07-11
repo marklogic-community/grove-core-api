@@ -11,8 +11,60 @@
     }
   },
   "paths": {
-    "_note": "{type} is just a placeholder, not a real parameter",
-    "/{type}/{id}": {
+    "/crud/{type}": {
+      "post": {
+        "description": "Insert new object of type `{type`} and a server-generated id",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "description": "Type of object",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "description": "The server-generated ID.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "example": {
+                    "id": "abc123"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "../common/responses.json#/Responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/crud/{type}/{id}": {
       "get": {
         "description": "Get existing object of type `{type}` with id `{id}`.",
         "parameters": [
@@ -100,11 +152,11 @@
           "204": {
             "description": "No Content"
           },
-          "404": {
-            "description": "Not Found"
-          },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "../common/responses.json#/Responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "../common/responses.json#/Responses/IdNotFound"
           }
         }
       },
@@ -182,11 +234,67 @@
           "204": {
             "description": "No Content"
           },
+          "401": {
+            "$ref": "../common/responses.json#/Responses/Unauthorized"
+          },
           "404": {
-            "$ref": "../common/responses.json#/Responses/NotFound"
+            "$ref": "../common/responses.json#/Responses/IdNotFound"
+          }
+        }
+      }
+    },
+    "/crud/{type}/{id}/{view}": {
+      "get": {
+        "description": "Get alternate view on content of existing object of type `{type}` with id `{id}`",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "description": "Type of object",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier of object",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "view",
+            "in": "path",
+            "description": "Name of the view",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Result of the alternate view on content of the identified object (if found)",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "../common/responses.json#/Responses/BadRequest"
           },
           "401": {
             "$ref": "../common/responses.json#/Responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "../common/responses.json#/Responses/IdNotFound"
           }
         }
       }
