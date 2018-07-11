@@ -65,8 +65,21 @@
         }
       }
     },
-    "NotFound": {
+    "UserNotFound": {
       "description": "Current user has no profile yet",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../schemas/error.json#/Error"
+          },
+          "example": {
+            "errorMessage": "Not Found"
+          }
+        }
+      }
+    },
+    "NotFound": {
+      "description": "Not Found",
       "content": {
         "application/json": {
           "schema": {

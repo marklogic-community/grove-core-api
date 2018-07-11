@@ -149,7 +149,7 @@
             "description": "Created"
           },
           "409": {
-            "description": "../common/responses.json#/Responses/Conflict"
+            "$ref": "../common/responses.json#/Responses/Conflict"
           },
           "401": {
             "$ref": "../common/responses.json#/Responses/Unauthorized"

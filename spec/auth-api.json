@@ -191,7 +191,7 @@
             "$ref": "../common/responses.json#/Responses/Unauthorized"
           },
           "404": {
-            "$ref": "../common/responses.json#/Responses/NotFound"
+            "$ref": "../common/responses.json#/Responses/UserNotFound"
           },
           "406": {
             "$ref": "../common/responses.json#/Responses/NotAcceptable"
