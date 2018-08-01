@@ -8,7 +8,7 @@
             "$ref": "../schemas/error.json#/Error"
           },
           "example": {
-            "errorMessage": "unauthorized"
+            "errorMessage": "Unauthorized"
           }
         }
       }
