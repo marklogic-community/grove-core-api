@@ -79,3 +79,11 @@ We only specified certain properties used in out-of-the-box MUIR UI implementati
 ## Testing an implementation
 
 This project comes with a small VueJS page that can be used to run a quick test against your middle-tier of choice. It may require CORS to be disabled on that middle-tier.
+
+## Contributing
+
+### Validating specs
+
+You can validate changes to `spec/auth-api.json`, `spec/crud-api.json`, and `spec/search-api.json` by running `npm test`. This will use the [swagger-cli](https://github.com/BigstickCarpet/swagger-cli) to validate changes.
+
+*If you add new spec files*, you need to add them to the test script in `package.json`.

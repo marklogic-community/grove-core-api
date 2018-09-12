@@ -1,0 +1,26 @@
+{
+  "name": "muir-core-api",
+  "version": "0.10.0-alpha",
+  "description": "core OpenAPI 3.0 specifications for MUIR-compliant middle-tiers",
+  "main": "index.js",
+  "scripts": {
+    "test": "swagger-cli validate auth-api.json; swagger-cli validate search-api.json; swagger-cli validate crud-api.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@project.marklogic.com:7999/~gjosten/muir-core-api.git"
+  },
+  "keywords": [
+    "MUIR",
+    "API",
+    "MarkLogic",
+    "search",
+    "CRUD",
+    "authentication"
+  ],
+  "author": "Patrick McElwee <patrick.mcelwee@marklogic.com>",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "swagger-cli": "^2.1.1"
+  }
+}

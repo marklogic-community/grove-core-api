@@ -274,7 +274,7 @@
               }
             }
           },
-          "40": {
+          "400": {
             "description": "Bad Request: unknown view"
           },
           "401": {
