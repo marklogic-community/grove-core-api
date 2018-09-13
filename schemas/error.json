@@ -1,0 +1,10 @@
+{
+  "Error": {
+    "type": "object",
+    "properties": {
+      "errorMessage": {
+        "type": "string"
+      }
+    }
+  }
+}

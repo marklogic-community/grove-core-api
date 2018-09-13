@@ -1,4 +1,4 @@
-# muir-middletier-api-docs
+# muir-core-api
 
 This project provides OpenAPI v3 specifications for MUIR-complient middle-tier implementations. It concerns the public facing REST api endpoints.
 
@@ -24,15 +24,15 @@ By convention, MUIR middle-tier implementations include CRUD and Search for the 
 
 ### /auth
 
-Authentication is specified in `auth-api.json`.
+Authentication is specified in `spec/auth-api.json`.
 
 ### CRUD
 
-CRUD is specified in `crud-api.json`.
+CRUD is specified in `spec/crud-api.json`.
 
 ### /search
 
-Search is specified in `search-api.json` and `search-api.yaml`, which are equivalent.
+Search is specified in `spec/search-api.json`.
 
 Three endpoints are specified for /search, allowing the consumer to request results-only, facets-only, or the combination of the two:
 

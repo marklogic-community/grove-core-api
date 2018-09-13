@@ -59,7 +59,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "../common/responses.json#/Responses/Unauthorized"
           }
         }
       }
@@ -89,26 +89,31 @@
         ],
         "responses": {
           "200": {
-            "description": "The content of the identified object (if found)",
+            "description": "Ok",
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "title": "{type}",
+                  "type": "object",
+                  "properties": {
+                    "*": {
+                      "type": "*"
+                    }
+                  }
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized"
-          },
           "404": {
-            "description": "ID Not Found"
+            "$ref": "../common/responses.json#/Responses/NotFound"
+          },
+          "401": {
+            "$ref": "../common/responses.json#/Responses/Unauthorized"
           }
         }
       },
-      "put": {
-        "description": "Replace content of existing object of type `{type}` with id `{id}`",
+      "post": {
+        "description": "Replace content of existing object of type `{type}` with id `{id}`.\n",
         "parameters": [
           {
             "name": "type",
@@ -133,8 +138,12 @@
           "content": {
             "*/*": {
               "schema": {
-                "type": "string",
-                "format": "binary"
+                "type": "object",
+                "properties": {
+                  "*": {
+                    "type": "*"
+                  }
+                }
               }
             }
           }
@@ -144,14 +153,14 @@
             "description": "No Content"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "../common/responses.json#/Responses/Unauthorized"
           },
           "404": {
-            "description": "ID Not Found"
+            "$ref": "../common/responses.json#/Responses/IdNotFound"
           }
         }
       },
-      "post": {
+      "put": {
         "description": "Insert new object of type `{type`} and id `{id}`",
         "parameters": [
           {
@@ -187,16 +196,16 @@
           "201": {
             "description": "Created"
           },
-          "401": {
-            "description": "Unauthorized"
-          },
           "409": {
-            "description": "Conflict: already exists"
+            "$ref": "../common/responses.json#/Responses/Conflict"
+          },
+          "401": {
+            "$ref": "../common/responses.json#/Responses/Unauthorized"
           }
         }
       },
       "delete": {
-        "description": "Delete existing object of type `{type}` with id `{id}`",
+        "description": "Delete existing object of type `{type}` with id `{id}`\n",
         "parameters": [
           {
             "name": "type",
@@ -222,10 +231,10 @@
             "description": "No Content"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "../common/responses.json#/Responses/Unauthorized"
           },
           "404": {
-            "description": "ID Not Found"
+            "$ref": "../common/responses.json#/Responses/IdNotFound"
           }
         }
       }
@@ -275,13 +284,13 @@
             }
           },
           "400": {
-            "description": "Bad Request: unknown view"
+            "$ref": "../common/responses.json#/Responses/BadRequest"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "../common/responses.json#/Responses/Unauthorized"
           },
           "404": {
-            "description": "ID Not Found"
+            "$ref": "../common/responses.json#/Responses/IdNotFound"
           }
         }
       }

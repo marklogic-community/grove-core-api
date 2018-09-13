@@ -1,0 +1,121 @@
+{
+  "Responses": {
+    "Unauthorized": {
+      "description": "The endpoint cannot be reached because the request is not authorized",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../schemas/error.json#/Error"
+          },
+          "example": {
+            "errorMessage": "Unauthorized"
+          }
+        }
+      }
+    },
+    "UnsupportedMediaType": {
+      "description": "Response when client didn't send JSON",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../schemas/error.json#/Error"
+          },
+          "example": {
+            "errorMessage": "Unsupported Media Type"
+          }
+        }
+      }
+    },
+    "MethodNotAllowed": {
+      "description": "Method Not Allowed",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../schemas/error.json#/Error"
+          },
+          "example": {
+            "errorMessage": "Method Not Allowed"
+          }
+        }
+      }
+    },
+    "BadRequest": {
+      "description": "Response when credentials are missing",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../schemas/error.json#/Error"
+          },
+          "example": {
+            "errorMessage": "Bad Request"
+          }
+        }
+      }
+    },
+    "NotAcceptable": {
+      "description": "Response when client doesn't Accept JSON",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../schemas/error.json#/Error"
+          },
+          "example": {
+            "errorMessage": "Not Acceptable"
+          }
+        }
+      }
+    },
+    "UserNotFound": {
+      "description": "Current user has no profile yet",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../schemas/error.json#/Error"
+          },
+          "example": {
+            "errorMessage": "Not Found"
+          }
+        }
+      }
+    },
+    "IdNotFound": {
+      "description": "ID Not Found",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../schemas/error.json#/Error"
+          },
+          "example": {
+            "errorMessage": "Not Found"
+          }
+        }
+      }
+    },
+    "NotFound": {
+    "description": "Not Found",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "../schemas/error.json#/Error"
+        },
+        "example": {
+          "errorMessage": "Not Found"
+        }
+      }
+    }
+  },
+    "Conflict": {
+      "description": "Conflict, already exists",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../schemas/error.json#/Error"
+          },
+          "example": {
+            "errorMessage": "Conflict"
+          }
+        }
+      }
+    }
+  }
+}
