@@ -1,6 +1,6 @@
 # grove-core-api
 
-This project provides OpenAPI v3 specifications for Grove-complient middle-tier implementations. It concerns the public facing REST api endpoints.
+This project provides OpenAPI v3 specifications for Grove-compliant middle-tier implementations. It concerns the public-facing REST endpoints.
 
 ## Principles
 
