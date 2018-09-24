@@ -2,9 +2,9 @@
   "openapi": "3.0.0",
   "servers": [],
   "info": {
-    "description": "This defines the baseline for middleTier-to-frontEnd Generic Search APIs for MarkLogic-UI-Resources (MUIR).",
+    "description": "This defines the baseline for middleTier-to-frontEnd Generic Search APIs for the Grove UI Toolkit.",
     "version": "0.10.0-beta",
-    "title": "MUIR Middle-tier Generic Search API",
+    "title": "Grove Middle-tier Generic Search API",
     "license": {
       "name": "Apache-2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -514,7 +514,7 @@
         }
       },
       "CustomFilter": {
-        "description": "A new filter type, created as an extension to core MUIR filter types.",
+        "description": "A new filter type, created as an extension to core filter types.",
         "allOf": [
           {
             "$ref": "#/components/schemas/TypedFilter"

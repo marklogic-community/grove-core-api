@@ -1,6 +1,6 @@
-# muir-core-api
+# grove-core-api
 
-This project provides OpenAPI v3 specifications for MUIR-complient middle-tier implementations. It concerns the public facing REST api endpoints.
+This project provides OpenAPI v3 specifications for Grove-complient middle-tier implementations. It concerns the public facing REST api endpoints.
 
 ## Principles
 
@@ -12,13 +12,13 @@ Design principles:
 
 ## Endpoints Overview
 
-The baseline for MUIR middle-tiers consists of 4 sets of endpoints:
+The baseline for Grove middle-tiers consists of 4 sets of endpoints:
 
 1. /api/auth: Authentication
 2. /api/{type}/id: CRUD for a specific type
 3. /api/search/{type}: Search for a specific type
 
-By convention, MUIR middle-tier implementations include CRUD and Search for the (pseudo-)type 'all'.
+By convention, Grove middle-tier implementations include CRUD and Search for the (pseudo-)type 'all'.
 
 ## Endpoints Detail
 
@@ -40,7 +40,7 @@ Three endpoints are specified for /search, allowing the consumer to request resu
     /search/{type}/facets
     /search/{type}
 
-The `type` parameter allows several different searches to be mounted. By convention, MUIR middle-tiers, out-of-the-box, will support an `all` pseudo-type that implements generic search-and-discovery against documents stored in the database (potentially within a "data" collection). Particular applications can modify the search or mount additional search endpoints, perhaps changing the `type` to entities like "patients" or concepts like "raw" or "harmonized". The exact meaning of those types (and implementation of typed searches) will be up to the middle-tier implementation.
+The `type` parameter allows several different searches to be mounted. By convention, Grove middle-tiers, out-of-the-box, will support an `all` pseudo-type that implements generic search-and-discovery against documents stored in the database (potentially within a "data" collection). Particular applications can modify the search or mount additional search endpoints, perhaps changing the `type` to entities like "patients" or concepts like "raw" or "harmonized". The exact meaning of those types (and implementation of typed searches) will be up to the middle-tier implementation.
 
 All requests against these endpoints are POST requests, allowing the search filters and options to be arbitrarily large in the request body. The request and response bodies are very similar for each of the three endpoints.
 
@@ -52,11 +52,11 @@ A search request includes two top-level properties: `options` and `filters`.
 
 `filters` specify the search query.
 
-In the MUIR search API, "filters" refer to values applied, typically by a user through the UI, against "constraints", which are filter capabilities known to the middle-tier.
+In the Grove search API, "filters" refer to values applied, typically by a user through the UI, against "constraints", which are filter capabilities known to the middle-tier.
 
-In MUIR, "filter" and "constraint" are broad terms which do not specify how a particular constraint operates. They could be backed by a MarkLogic Search API constraint, a MarkLogic REST extension using cts queries, or even some Elasticsearch implementation.
+In Grove, "filter" and "constraint" are broad terms which do not specify how a particular constraint operates. They could be backed by a MarkLogic Search API constraint, a MarkLogic REST extension using cts queries, or even some Elasticsearch implementation.
 
-In this spec, we aim to strike a balance between expressive power and convenience for UI developers. Most filter interfaces will be fairly simple, such as a search bar or selectable list of facets. Authors of such components should not be burdened with complicated filter structures. Advanced search interfaces, however, are possible within the MUIR search spec as recursive combinations of simpler filters.
+In this spec, we aim to strike a balance between expressive power and convenience for UI developers. Most filter interfaces will be fairly simple, such as a search bar or selectable list of facets. Authors of such components should not be burdened with complicated filter structures. Advanced search interfaces, however, are possible within the Grove search spec as recursive combinations of simpler filters.
 
 The basic filter types described by this spec include:
 
@@ -68,13 +68,13 @@ The basic filter types described by this spec include:
 
 These three basic filter types can be combined recursively using AND, OR, NOT, and NEAR in order to populate the "filters" field (called "CombinedFilter" in the spec document). The UI thus has control over how individual filters should be combined and can encode advanced queries. CombinedFilter uses the expressiveness of MarkLogic's REST API search grammar as a model.
 
-Additional filter types can easily be plugged into a MUIR Project as needed. These could be highly specialized or very generic like the ones above.
+Additional filter types can easily be plugged into a Grove Project as needed. These could be highly specialized or very generic like the ones above.
 
 #### Search Response
 
 The specified SearchResponse is mostly a subset of the response from the MarkLogic Search API. (The one addition is an "id" field, which may differ from document URI, allowing the application to express search over higher-level concepts or entities, rather than individual documents.) Results from other sources could be marshalled into the same structure. It covers some metadata, such as `total` and pagination properties, as well as facets and results.
 
-We only specified certain properties used in out-of-the-box MUIR UI implementations. The response can be expanded with additional properties by middle-tier implementations.
+We only specified certain properties used in out-of-the-box Grove UI implementations. The response can be expanded with additional properties by middle-tier implementations.
 
 ## Testing an implementation
 

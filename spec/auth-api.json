@@ -2,9 +2,9 @@
   "openapi": "3.0.0",
   "servers": [],
   "info": {
-    "description": "This defines the baseline for middleTier-to-frontEnd Authentication APIs for MarkLogic-UI-Resources (MUIR).",
+    "description": "This defines the baseline for middleTier-to-frontEnd Authentication APIs for the Grove UI Toolkit.",
     "version": "0.10.0-beta",
-    "title": "MUIR Middle-tier Authentication API",
+    "title": "Grove Middle-tier Authentication API",
     "license": {
       "name": "Apache-2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
