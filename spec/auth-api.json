@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "This defines the baseline for middleTier-to-frontEnd Authentication APIs for MarkLogic-UI-Resources (MUIR).",
-    "version": "0.0.2",
+    "version": "0.10.0-beta",
     "title": "MUIR Middle-tier Authentication API",
     "license": {
       "name": "Apache-2.0",
@@ -187,11 +187,11 @@
               }
             }
           },
+          "204": {
+            "description": "No-content (success) response when user is known, but doesn't have a saved profile yet"
+          },
           "401": {
             "$ref": "../common/responses.json#/Responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "../common/responses.json#/Responses/UserNotFound"
           },
           "406": {
             "$ref": "../common/responses.json#/Responses/NotAcceptable"
