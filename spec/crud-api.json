@@ -80,7 +80,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "Unique identifier of object",
+            "description": "Unique url-encoded identifier of object",
             "required": true,
             "schema": {
               "type": "string"
@@ -127,7 +127,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "Unique identifier of object",
+            "description": "Unique url-encoded identifier of object",
             "required": true,
             "schema": {
               "type": "string"
@@ -175,7 +175,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "Unique identifier of object",
+            "description": "Unique url-encoded identifier of object.",
             "required": true,
             "schema": {
               "type": "string"
@@ -219,7 +219,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "Unique identifier of object",
+            "description": "Unique url-encoded identifier of object",
             "required": true,
             "schema": {
               "type": "string"
@@ -255,7 +255,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "Unique identifier of object",
+            "description": "Unique url-encoded identifier of object",
             "required": true,
             "schema": {
               "type": "string"
