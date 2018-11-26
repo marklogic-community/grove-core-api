@@ -11,7 +11,7 @@
     }
   },
   "paths": {
-    "/crud/{type}": {
+    "/api/crud/{type}": {
       "post": {
         "description": "Insert new object of type `{type`} and a server-generated id",
         "parameters": [
@@ -64,7 +64,7 @@
         }
       }
     },
-    "/crud/{type}/{id}": {
+    "/api/crud/{type}/{id}": {
       "get": {
         "description": "Get content of existing object of type `{type}` with id `{id}`. Types can refer to entities or concepts",
         "parameters": [
@@ -239,7 +239,7 @@
         }
       }
     },
-    "/crud/{type}/{id}/{view}": {
+    "/api/crud/{type}/{id}/{view}": {
       "get": {
         "description": "Get alternate view on content of existing object of type `{type}` with id `{id}`",
         "parameters": [
