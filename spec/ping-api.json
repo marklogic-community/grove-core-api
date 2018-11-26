@@ -1,0 +1,53 @@
+{
+  "openapi": "3.0.0",
+  "servers": [],
+  "info": {
+    "description": "This defines a simple API for checking if middleTier is alive.",
+    "version": "0.10.0-beta",
+    "title": "Grove Middle-tier Ping API",
+    "license": {
+      "name": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "paths": {
+    "/api/ping": {
+      "get": {
+        "description": "Ping request",
+        "responses": {
+          "200": {
+            "description": "Always 200, anything else means middle-tier is out of order",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ping": {
+                      "type": "string",
+                      "description": "Value should always be 'pong'!"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Optional property stating middle-tier name"
+                    },
+                    "version": {
+                      "type": "string",
+                      "description": "Optional property stating middle-tier (semver-compliant) version"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [],
+  "components": {
+    "links": {},
+    "callbacks": {},
+    "schemas": {},
+    "securitySchemes": {}
+  }
+}
