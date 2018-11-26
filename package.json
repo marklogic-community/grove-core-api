@@ -4,7 +4,8 @@
   "description": "core OpenAPI 3.0 specifications for Grove-compliant middle-tiers",
   "main": "index.js",
   "scripts": {
-    "test": "swagger-cli validate spec/auth-api.json; swagger-cli validate spec/search-api.json; swagger-cli validate spec/crud-api.json"
+    "test": "swagger-cli validate spec/ping-api.json; swagger-cli validate spec/auth-api.json; swagger-cli validate spec/search-api.json; swagger-cli validate spec/crud-api.json",
+    "test-api": "jest"
   },
   "repository": {
     "type": "git",
@@ -34,6 +35,9 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
+    "dotenv": "^6.1.0",
+    "frisby": "^2.1.0",
+    "jest": "^23.6.0",
     "swagger-cli": "^2.1.1"
   },
   "bugs": {
