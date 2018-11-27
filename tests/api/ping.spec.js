@@ -30,7 +30,7 @@ describe('/api/ping', () => {
   it('should not listen to non-GET /api/ping', function () {
     return frisby
       .post(groveBaseUrl + 'api/ping')
-      .expect('status', 404);
+      .expect('status', 405);
   });
 
   it('should not listen to anything else below /api/ping', function () {
