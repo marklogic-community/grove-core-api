@@ -7,6 +7,9 @@ const groveAppHost = process.env.GROVE_APP_HOST || 'localhost';
 const groveAppPort = process.env.GROVE_APP_PORT || '9003';
 const groveBaseUrl = 'http://' + groveAppHost + ':' + groveAppPort + '/';
 
+const groveUser = (process.env.GROVE_APP_NAME || 'grove-app') + '-user';
+const grovePass = process.env.GROVE_DEFAULT_PWD || '';
+
 console.log('Testing auth-api.json against ' + groveBaseUrl);
 
 describe('/api/auth/status', () => {
@@ -14,17 +17,6 @@ describe('/api/auth/status', () => {
     return frisby
       .post(groveBaseUrl + 'api/auth/status')
       .expect('status', 405);
-  });
-
-  it('can receive anything', function () {
-    return frisby
-      .fetch(groveBaseUrl + 'api/auth/status', {
-        method: 'GET',
-        headers: {
-          'content-type': 'application/octet-stream'
-        }
-      })
-      .expect('status', 200);
   });
 
   it('can only return json', function () {
@@ -36,6 +28,17 @@ describe('/api/auth/status', () => {
         }
       })
       .expect('status', 406);
+  });
+
+  it('can receive anything (request body is ignored)', function () {
+    return frisby
+      .fetch(groveBaseUrl + 'api/auth/status', {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/octet-stream'
+        }
+      })
+      .expect('status', 200);
   });
 
   it('should always return a status', function () {
@@ -60,12 +63,9 @@ describe('/api/auth/status', () => {
 
   it('should return username for authed user', function () {
     return frisby
-      .fetch(groveBaseUrl + 'api/auth/login', {
-        method: 'POST',
-        body: JSON.stringify({
-          username: 'admin',
-          password: 'admin'
-        })
+      .post(groveBaseUrl + 'api/auth/login', {
+        username: 'admin',
+        password: 'admin'
       })
       .expect('status', 200)
       .expect('json', 'authenticated', true)
@@ -85,12 +85,9 @@ describe('/api/auth/status', () => {
 
   it('should return authed false after logout', function () {
     return frisby
-      .fetch(groveBaseUrl + 'api/auth/login', {
-        method: 'POST',
-        body: JSON.stringify({
-          username: 'admin',
-          password: 'admin'
-        })
+      .post(groveBaseUrl + 'api/auth/login', {
+        username: 'admin',
+        password: 'admin'
       })
       .expect('status', 200)
       .expect('json', 'authenticated', true)
@@ -132,7 +129,7 @@ describe('/api/auth/login', () => {
       .fetch(groveBaseUrl + 'api/auth/login', {
         method: 'POST',
         headers: {
-          'content-type': 'application/xml'
+          'Content-Type': 'application/xml'
         }
       })
       .expect('status', 415);
@@ -196,32 +193,18 @@ describe('/api/auth/logout', () => {
 
   it('always returns empty', function () {
     return frisby
-      .fetch(groveBaseUrl + 'api/auth/logout', {
-        method: 'POST',
-        headers: {
-          accept: 'application/xml'
-        }
-      })
+      .post(groveBaseUrl + 'api/auth/logout')
       .expect('status', 204)
       .expect('bodyContains', /^$/);
   });
 
-  it('should expect username and password', function () {
+  it('doesn\'t fail when not logged in', function () {
     return frisby
-      .post(groveBaseUrl + 'api/auth/login')
-      .expect('status', 400);
+      .post(groveBaseUrl + 'api/auth/logout')
+      .expect('status', 204);
   });
 
-  it('should fail for bad user', function () {
-    return frisby
-      .post(groveBaseUrl + 'api/auth/login', {
-        username: 'bad',
-        password: 'user'
-      })
-      .expect('status', 401);
-  });
-
-  it('should succeed for good user', function () {
+  it('should succeed after logging in', function () {
     return frisby
       .post(groveBaseUrl + 'api/auth/login', {
         username: 'admin',
@@ -229,6 +212,108 @@ describe('/api/auth/logout', () => {
       })
       .expect('status', 200)
       .expect('json', 'authenticated', true)
-      .expect('json', 'username', 'admin');
+      .then(function(res) {
+        let cookie = res.headers.get('set-cookie');
+        return frisby
+          .fetch(groveBaseUrl + 'api/auth/logout', {
+            method: 'POST',
+            headers: {
+              cookie: cookie
+            }
+          })
+          .expect('status', 204);
+      });
   });
+});
+
+describe('/api/auth/profile', () => {
+  it('only allows GET or POST', function () {
+    return frisby
+      .put(groveBaseUrl + 'api/auth/profile')
+      .expect('status', 405);
+  });
+
+  // GET /profile
+
+  it('GET only return json', function () {
+    return frisby
+      .fetch(groveBaseUrl + 'api/auth/profile', {
+        method: 'GET',
+        headers: {
+          accept: 'application/xml'
+        }
+      })
+      .expect('status', 406);
+  });
+
+  it('GET requires logging in', function () {
+    return frisby
+      .get(groveBaseUrl + 'api/auth/profile')
+      .expect('status', 401);
+  });
+
+  it('GET of user with profile returns non-empty', function () {
+    return frisby
+      .post(groveBaseUrl + 'api/auth/login', {
+        username: 'admin',
+        password: 'admin'
+      })
+      .expect('status', 200)
+      .expect('json', 'authenticated', true)
+      .then(function(res) {
+        let cookie = res.headers.get('set-cookie');
+        return frisby
+          .fetch(groveBaseUrl + 'api/auth/profile', {
+            method: 'GET',
+            headers: {
+              cookie: cookie
+            }
+          })
+          .expect('status', 200)
+          .expect('json', '', {});
+      });
+  });
+
+  it('GET of user with no profile returns empty', function () {
+    return frisby
+      .post(groveBaseUrl + 'api/auth/login', {
+        username: groveUser,
+        password: grovePass
+      })
+      .expect('status', 200)
+      .expect('json', 'authenticated', true)
+      .then(function(res) {
+        let cookie = res.headers.get('set-cookie');
+        return frisby
+          .fetch(groveBaseUrl + 'api/auth/profile', {
+            method: 'GET',
+            headers: {
+              cookie: cookie
+            }
+          })
+          .expect('status', 204)
+          .expect('bodyContains', /^$/);
+      });
+  });
+
+  // POST /profile
+
+  it('POST receive only json', function () {
+    return frisby
+      .fetch(groveBaseUrl + 'api/auth/profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/xml'
+        }
+      })
+      .expect('status', 415);
+  });
+
+  it('POST requires logging in', function () {
+    return frisby
+      .post(groveBaseUrl + 'api/auth/profile', {})
+      .expect('status', 401);
+  });
+
+
 });
