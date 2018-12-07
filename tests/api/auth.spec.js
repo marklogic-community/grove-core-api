@@ -30,6 +30,50 @@ describe('/api/auth/status', () => {
       .expect('status', 406);
   });
 
+  it('should accept full wildcard', function () {
+    return frisby
+      .fetch(groveBaseUrl + 'api/auth/status', {
+        method: 'GET',
+        headers: {
+          accept: '*/*'
+        }
+      })
+      .expect('status', 200);
+  });
+
+  it('should accept wildcard json', function () {
+    return frisby
+      .fetch(groveBaseUrl + 'api/auth/status', {
+        method: 'GET',
+        headers: {
+          accept: '*/json'
+        }
+      })
+      .expect('status', 200);
+  });
+
+  it('should accept wildcard application', function () {
+    return frisby
+      .fetch(groveBaseUrl + 'api/auth/status', {
+        method: 'GET',
+        headers: {
+          accept: 'application/*'
+        }
+      })
+      .expect('status', 200);
+  });
+
+  it('should accept wildcard application/json', function () {
+    return frisby
+      .fetch(groveBaseUrl + 'api/auth/status', {
+        method: 'GET',
+        headers: {
+          accept: 'application/json'
+        }
+      })
+      .expect('status', 200);
+  });
+
   it('can receive anything (request body is ignored)', function () {
     return frisby
       .fetch(groveBaseUrl + 'api/auth/status', {
