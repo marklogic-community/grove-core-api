@@ -1,6 +1,6 @@
 {
   "name": "grove-core-api",
-  "version": "0.10.0-beta",
+  "version": "1.0.0-rc.1",
   "description": "core OpenAPI 3.0 specifications for Grove-compliant middle-tiers",
   "main": "index.js",
   "scripts": {
