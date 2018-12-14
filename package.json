@@ -18,7 +18,20 @@
     "CRUD",
     "authentication"
   ],
-  "author": "Patrick McElwee <patrick.mcelwee@marklogic.com>",
+  "contributors": [
+    {
+      "name": "Geert Josten",
+      "url": "https://github.com/grtjn"
+    },
+    {
+      "name": "Patrick McElwee",
+      "url": "https://github.com/patrickmcelwee"
+    },
+    {
+      "name": "Marianne Myers",
+      "url": "https://github.com/mariannemyers"
+    }
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
     "swagger-cli": "^2.1.1"
