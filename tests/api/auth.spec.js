@@ -144,7 +144,7 @@ describe('/api/auth/status', () => {
             }
           })
           .expect('status', 204)
-          .then(function(res2) {
+          .then(function() {
             return frisby
               .fetch(groveBaseUrl + 'api/auth/status', {
                 method: 'GET',

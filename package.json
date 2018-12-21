@@ -1,6 +1,6 @@
 {
   "name": "@marklogic-community/grove-core-api",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.2",
   "description": "core OpenAPI 3.0 specifications for Grove-compliant middle-tiers",
   "main": "index.js",
   "scripts": {
