@@ -1,6 +1,8 @@
 module.exports = {
+  root: true,
   env: {
-    jest: true
+    node: true,
+    es6: true
   },
   extends: [
     'plugin:prettier/recommended',
