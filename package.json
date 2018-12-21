@@ -4,6 +4,8 @@
   "description": "core OpenAPI 3.0 specifications for Grove-compliant middle-tiers",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "test": "swagger-cli validate spec/ping-api.json; swagger-cli validate spec/auth-api.json; swagger-cli validate spec/search-api.json; swagger-cli validate spec/crud-api.json",
     "test-api": "jest"
   },
@@ -35,10 +37,18 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "dotenv": "^6.1.0",
+    "dotenv": "^6.2.0",
+    "eslint": "^5.1.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-prettier": "^3.0.0",
     "frisby": "^2.1.0",
     "jest": "^23.6.0",
-    "swagger-cli": "^2.1.1"
+    "prettier": "^1.13.7",
+    "swagger-cli": "^2.2.0"
+  },
+  "engines": {
+    "node": ">=8.10.0"
   },
   "private": true
 }
