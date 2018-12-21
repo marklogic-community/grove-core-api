@@ -1,5 +1,5 @@
 const frisby = require('frisby');
-const Joi = frisby.Joi;
+//const Joi = frisby.Joi; // for jsonTypes tests
 
 require('../lib/readEnv').readEnv();
 
@@ -7,8 +7,8 @@ const groveAppHost = process.env.GROVE_APP_HOST || 'localhost';
 const groveAppPort = process.env.GROVE_APP_PORT || '9003';
 const groveBaseUrl = 'http://' + groveAppHost + ':' + groveAppPort + '/';
 
-const groveUser = (process.env.GROVE_APP_NAME || 'grove-app') + '-user';
-const grovePass = process.env.GROVE_DEFAULT_PWD || '';
+// const groveUser = (process.env.GROVE_APP_NAME || 'grove-app') + '-user';
+// const grovePass = process.env.GROVE_DEFAULT_PWD || '';
 
 console.log('Testing crud-api.json against ' + groveBaseUrl);
 
@@ -30,7 +30,6 @@ beforeAll(() => {
 });
 
 describe('/api/crud/all/123', () => {
-
   it('requires authentication', function() {
     return frisby
       .fetch(groveBaseUrl + 'api/crud/all/123', {
@@ -75,14 +74,14 @@ describe('/api/crud/all/123', () => {
       .expect('status', 201)
       .then(function() {
         return frisby
-        .fetch(groveBaseUrl + 'api/crud/all/123', {
-          method: 'GET',
-          headers: {
-            cookie: cookie
-          }
-        })
-        .expect('status', 200)
-        .expect('json', 'test', 'grove-core-api');
+          .fetch(groveBaseUrl + 'api/crud/all/123', {
+            method: 'GET',
+            headers: {
+              cookie: cookie
+            }
+          })
+          .expect('status', 200)
+          .expect('json', 'test', 'grove-core-api');
       });
   });
 
@@ -114,14 +113,14 @@ describe('/api/crud/all/123', () => {
       .expect('status', 204)
       .then(function() {
         return frisby
-        .fetch(groveBaseUrl + 'api/crud/all/123', {
-          method: 'GET',
-          headers: {
-            cookie: cookie
-          }
-        })
-        .expect('status', 200)
-        .expect('json', 'test', 'updated grove-core-api');
+          .fetch(groveBaseUrl + 'api/crud/all/123', {
+            method: 'GET',
+            headers: {
+              cookie: cookie
+            }
+          })
+          .expect('status', 200)
+          .expect('json', 'test', 'updated grove-core-api');
       });
   });
 
@@ -150,13 +149,13 @@ describe('/api/crud/all/123', () => {
       .expect('status', 204)
       .then(function() {
         return frisby
-        .fetch(groveBaseUrl + 'api/crud/all/123', {
-          method: 'GET',
-          headers: {
-            cookie: cookie
-          }
-        })
-        .expect('status', 404);
+          .fetch(groveBaseUrl + 'api/crud/all/123', {
+            method: 'GET',
+            headers: {
+              cookie: cookie
+            }
+          })
+          .expect('status', 404);
       });
   });
 
@@ -170,5 +169,4 @@ describe('/api/crud/all/123', () => {
       })
       .expect('status', 404);
   });
-
 });
