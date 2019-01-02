@@ -258,14 +258,16 @@
             },
             {
               "near": {
-                "left": {
-                  "type": "queryText",
-                  "value": "Patrick"
-                },
-                "right": {
-                  "type": "queryText",
-                  "value": "McElwee"
-                },
+                "filters": [
+                  {
+                    "type": "queryText",
+                    "value": "Patrick"
+                  },
+                  {
+                    "type": "queryText",
+                    "value": "McElwee"
+                  }
+                ],
                 "distance": 10
               }
             }
