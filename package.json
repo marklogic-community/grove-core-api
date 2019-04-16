@@ -1,5 +1,5 @@
 {
-  "name": "grove-core-api",
+  "name": "@marklogic-community/grove-core-api",
   "version": "1.0.0-rc.1",
   "description": "core OpenAPI 3.0 specifications for Grove-compliant middle-tiers",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@project.marklogic.com:7999/~gjosten/grove-core-api.git"
+    "url": "git+https://github.com/marklogic-community/grove-core-api.git"
   },
   "keywords": [
     "Grove",
@@ -36,5 +36,9 @@
   "devDependencies": {
     "swagger-cli": "^2.1.1"
   },
-  "private": true
+  "bugs": {
+    "url": "https://github.com/marklogic-community/grove-core-api/issues"
+  },
+  "homepage": "https://github.com/marklogic-community/grove-core-api#readme"
+
 }
