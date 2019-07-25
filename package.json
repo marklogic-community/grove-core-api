@@ -1,6 +1,6 @@
 {
   "name": "@marklogic-community/grove-core-api",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0",
   "description": "core OpenAPI 3.0 specifications for Grove-compliant middle-tiers",
   "main": "index.js",
   "scripts": {
@@ -24,8 +24,8 @@
       "url": "https://github.com/grtjn"
     },
     {
-      "name": "Patrick McElwee",
-      "url": "https://github.com/patrickmcelwee"
+      "name": "Matt Pileggi",
+      "url": "https://github.com/withjam"
     },
     {
       "name": "Marianne Myers",
@@ -40,5 +40,4 @@
     "url": "https://github.com/marklogic-community/grove-core-api/issues"
   },
   "homepage": "https://github.com/marklogic-community/grove-core-api#readme"
-
 }
