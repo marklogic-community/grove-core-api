@@ -7,27 +7,30 @@ const groveAppHost = process.env.GROVE_APP_HOST || 'localhost';
 const groveAppPort = process.env.GROVE_APP_PORT || '9003';
 const groveBaseUrl = 'http://' + groveAppHost + ':' + groveAppPort + '/';
 
-// const groveUser = (process.env.GROVE_APP_NAME || 'grove-app') + '-user';
-// const grovePass = process.env.GROVE_DEFAULT_PWD || '';
+const adminUser = process.env.GROVE_ADMIN_NAME || 'admin';
+const adminPass = process.env.GROVE_ADMIN_PWD || 'admin';
 
 console.log('Testing crud-api.json against ' + groveBaseUrl);
 
 // Prepare tests
+
 var cookie;
 
 beforeAll(() => {
   return frisby
     .post(groveBaseUrl + 'api/auth/login', {
-      username: 'admin',
-      password: 'admin'
+      username: adminUser,
+      password: adminPass
     })
     .expect('status', 200)
     .expect('json', 'authenticated', true)
-    .expect('json', 'username', 'admin')
+    .expect('json', 'username', adminUser)
     .then(function(res) {
       cookie = res.headers.get('set-cookie');
     });
 });
+
+// Run tests
 
 describe('/api/crud/all/123', () => {
   it('requires authentication', function() {
