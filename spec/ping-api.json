@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "This defines a simple API for checking if middleTier is alive.",
-    "version": "0.10.0-beta",
+    "version": "1.0.0-rc.2",
     "title": "Grove Middle-tier Ping API",
     "license": {
       "name": "Apache-2.0",

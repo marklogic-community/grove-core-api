@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "This defines the baseline for middleTier-to-frontEnd Generic CRUD APIs for the Grove UI Toolkit.",
-    "version": "0.10.0-beta",
+    "version": "1.0.0-rc.2",
     "title": "Grove Middle-tier Generic CRUD API",
     "license": {
       "name": "Apache-2.0",
