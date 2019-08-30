@@ -58,9 +58,12 @@ describe('/api/search/all/results', () => {
         method: 'POST',
         headers: {
           cookie: cookie
-        }
+        },
+        body: JSON.stringify({
+          filters: {},
+          options: {}
+        })
       })
       .expect('status', 200);
   });
-
 });
