@@ -130,6 +130,56 @@
           }
         }
       }
+    },
+    "/suggest/{type}/facets/{facet}" : {
+      "post" : {
+        "description" : "Suggest all facet values of type `{type}`, returning all available values. The definition of what the type means is up to the application.",
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "path",
+          "description" : "The type against which you are searching. It will typically correspond to a set of searchOptions known to the middle-tier. Convention is to use a pseudo-type of 'all' for generic search-and-discovery applications.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "facet",
+          "in" : "path",
+          "description" : "The facet name against which the suggestions will be based..",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuggestRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FacetSuggestions"
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "../common/responses.json#/Responses/Unauthorized"
+          }
+        }
+      }
     }
   },
   "security": [],
@@ -138,6 +188,32 @@
     "callbacks": {},
     "schemas": {
       "SearchRequest": {
+        "type": "object",
+        "properties": {
+          "filters": {
+            "$ref": "#/components/schemas/CombinedFilter"
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "integer",
+                "description": "result to start on for pagination",
+                "minimum": 1,
+                "default": 1
+              },
+              "pageLength": {
+                "type": "integer",
+                "description": "result to start on for pagination",
+                "minimum": 1,
+                "default": 10
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "SuggestRequest": {
         "type": "object",
         "properties": {
           "filters": {
@@ -820,7 +896,18 @@
         },
         "additionalProperties": true
       },
-      "AnyValue": {}
+      "AnyValue": {},
+      "FacetSuggestions" : {
+        "type" : "object",
+        "properties" : {
+          "suggestions" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
     },
     "securitySchemes": {}
   }
