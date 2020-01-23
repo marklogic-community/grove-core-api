@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "This defines the baseline for middleTier-to-frontEnd Generic Search APIs for the Grove UI Toolkit.",
-    "version": "1.0.0-rc.2",
+    "version": "1.0.0",
     "title": "Grove Middle-tier Generic Search API",
     "license": {
       "name": "Apache-2.0",

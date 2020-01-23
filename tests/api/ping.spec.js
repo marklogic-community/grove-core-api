@@ -7,7 +7,30 @@ const groveAppHost = process.env.GROVE_APP_HOST || 'localhost';
 const groveAppPort = process.env.GROVE_APP_PORT || '9003';
 const groveBaseUrl = 'http://' + groveAppHost + ':' + groveAppPort + '/';
 
+const adminUser = process.env.GROVE_ADMIN_NAME || 'admin';
+const adminPass = process.env.GROVE_ADMIN_PWD || 'admin';
+
 console.log('Testing ping-api.json against ' + groveBaseUrl);
+
+// Prepare tests
+
+var cookie;
+
+beforeAll(() => {
+  return frisby
+    .post(groveBaseUrl + 'api/auth/login', {
+      username: adminUser,
+      password: adminPass
+    })
+    .expect('status', 200)
+    .expect('json', 'authenticated', true)
+    .expect('json', 'username', adminUser)
+    .then(function(res) {
+      cookie = res.headers.get('set-cookie');
+    });
+});
+
+// Run tests
 
 describe('/api/ping', () => {
   it('should not listen to something unknown under /api', function() {
@@ -22,6 +45,23 @@ describe('/api/ping', () => {
       .expect('jsonTypes', '', {
         name: Joi.string().optional(),
         version: Joi.string().optional()
+      });
+  });
+
+  it('should include backend details when authenticated', function() {
+    return frisby
+      .fetch(groveBaseUrl + 'api/ping', {
+        method: 'GET',
+        headers: {
+          cookie: cookie
+        }
+      })
+      .expect('status', 200)
+      .expect('json', 'ping', 'pong')
+      .expect('jsonTypes', '', {
+        name: Joi.string().optional(),
+        version: Joi.string().optional(),
+        backend: Joi.object().required()
       });
   });
 

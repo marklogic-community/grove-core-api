@@ -32,6 +32,87 @@ beforeAll(() => {
 
 // Run tests
 
+describe('/api/crud/all', () => {
+  it('requires authentication', function() {
+    return frisby
+      .fetch(groveBaseUrl + 'api/crud/all', {
+        method: 'GET'
+      })
+      .expect('status', 401);
+  });
+
+  it('only allows POST without id', function() {
+    return frisby
+      .fetch(groveBaseUrl + 'api/crud/all', {
+        method: 'GET',
+        headers: {
+          cookie: cookie
+        }
+      })
+      .expect('status', 405);
+  });
+
+  it('only allows POST without id', function() {
+    return frisby
+      .fetch(groveBaseUrl + 'api/crud/all', {
+        method: 'PUT',
+        headers: {
+          cookie: cookie
+        }
+      })
+      .expect('status', 405);
+  });
+
+  it('only allows POST without id', function() {
+    return frisby
+      .fetch(groveBaseUrl + 'api/crud/all', {
+        method: 'DELETE',
+        headers: {
+          cookie: cookie
+        }
+      })
+      .expect('status', 405);
+  });
+
+  it('should allow POST to Create without id', function() {
+    return frisby
+      .fetch(groveBaseUrl + 'api/crud/all', {
+        method: 'POST',
+        headers: {
+          cookie: cookie
+        },
+        body: JSON.stringify({
+          test: 'grove-core-api'
+        })
+      })
+      .expect('status', 201)
+      .then(function(res) {
+        var id = res.headers.get('location');
+        return (
+          frisby
+            .fetch(groveBaseUrl + 'api/crud/all/' + id, {
+              method: 'GET',
+              headers: {
+                cookie: cookie
+              }
+            })
+            .expect('status', 200)
+            .expect('json', 'test', 'grove-core-api')
+
+            // cleanup immediately
+            .then(function() {
+              return frisby.fetch(groveBaseUrl + 'api/crud/all/' + id, {
+                method: 'DELETE',
+                headers: {
+                  cookie: cookie
+                }
+              });
+            })
+        );
+      });
+  });
+});
+
 describe('/api/crud/all/123', () => {
   it('requires authentication', function() {
     return frisby
@@ -41,10 +122,10 @@ describe('/api/crud/all/123', () => {
       .expect('status', 401);
   });
 
-  it('only allows GET,POST,PUT,DELETE', function() {
+  it('only allows GET,PUT,DELETE with id', function() {
     return frisby
       .fetch(groveBaseUrl + 'api/crud/all/123', {
-        method: 'HEAD',
+        method: 'POST',
         headers: {
           cookie: cookie
         }
@@ -52,7 +133,7 @@ describe('/api/crud/all/123', () => {
       .expect('status', 405);
   });
 
-  it('should allow GET', function() {
+  it('should allow GET with id', function() {
     return frisby
       .fetch(groveBaseUrl + 'api/crud/all/123', {
         method: 'GET',
@@ -63,7 +144,7 @@ describe('/api/crud/all/123', () => {
       .expect('status', 404);
   });
 
-  it('should allow PUT to Create', function() {
+  it('should allow PUT to Create with id', function() {
     return frisby
       .fetch(groveBaseUrl + 'api/crud/all/123', {
         method: 'PUT',
@@ -88,24 +169,10 @@ describe('/api/crud/all/123', () => {
       });
   });
 
-  it('cannot Create twice', function() {
+  it('should allow PUT for Update', function() {
     return frisby
       .fetch(groveBaseUrl + 'api/crud/all/123', {
         method: 'PUT',
-        headers: {
-          cookie: cookie
-        },
-        body: JSON.stringify({
-          test: 'grove-core-api'
-        })
-      })
-      .expect('status', 409);
-  });
-
-  it('should allow POST for Update', function() {
-    return frisby
-      .fetch(groveBaseUrl + 'api/crud/all/123', {
-        method: 'POST',
         headers: {
           cookie: cookie
         },
@@ -125,20 +192,6 @@ describe('/api/crud/all/123', () => {
           .expect('status', 200)
           .expect('json', 'test', 'updated grove-core-api');
       });
-  });
-
-  it('cannot Update non-existing', function() {
-    return frisby
-      .fetch(groveBaseUrl + 'api/crud/all/non-existing', {
-        method: 'POST',
-        headers: {
-          cookie: cookie
-        },
-        body: JSON.stringify({
-          test: 'updated grove-core-api'
-        })
-      })
-      .expect('status', 404);
   });
 
   it('should allow DELETE', function() {
@@ -163,6 +216,7 @@ describe('/api/crud/all/123', () => {
   });
 
   it('cannot DELETE twice', function() {
+    // ML Rest-api is known to ignore rather than fail
     return frisby
       .fetch(groveBaseUrl + 'api/crud/all/123', {
         method: 'DELETE',

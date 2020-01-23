@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "servers": [],
   "info": {
-    "description": "This defines the baseline for middleTier-to-frontEnd Generic CRUD APIs for the Grove UI Toolkit.",
-    "version": "1.0.0-rc.2",
+    "description": "This defines the baseline for middleTier-to-frontEnd Generic CRUD APIs for the Grove UI Toolkit. It follows guidelines presented in https://restfulapi.net/rest-put-vs-post/.",
+    "version": "1.0.0",
     "title": "Grove Middle-tier Generic CRUD API",
     "license": {
       "name": "Apache-2.0",
@@ -112,56 +112,8 @@
           }
         }
       },
-      "post": {
-        "description": "Replace content of existing object of type `{type}` with id `{id}`.\n",
-        "parameters": [
-          {
-            "name": "type",
-            "in": "path",
-            "description": "Type of object",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Unique url-encoded identifier of object",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "*/*": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "*": {
-                    "type": "*"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "401": {
-            "$ref": "../common/responses.json#/Responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "../common/responses.json#/Responses/IdNotFound"
-          }
-        }
-      },
       "put": {
-        "description": "Insert new object of type `{type`} and id `{id}`",
+        "description": "Insert new or replace content of existing object of type `{type`} and id `{id}`",
         "parameters": [
           {
             "name": "type",
@@ -194,10 +146,10 @@
         },
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Created (if not existing)"
           },
-          "409": {
-            "$ref": "../common/responses.json#/Responses/Conflict"
+          "204": {
+            "description": "No Content (if existing)"
           },
           "401": {
             "$ref": "../common/responses.json#/Responses/Unauthorized"

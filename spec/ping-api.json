@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "This defines a simple API for checking if middleTier is alive.",
-    "version": "1.0.0-rc.2",
+    "version": "1.0.0",
     "title": "Grove Middle-tier Ping API",
     "license": {
       "name": "Apache-2.0",
@@ -33,6 +33,20 @@
                     "version": {
                       "type": "string",
                       "description": "Optional property stating middle-tier (semver-compliant) version"
+                    },
+                    "backend": {
+                      "type": "object",
+                      "description": "Optional property providing space for backend information",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Optional property stating backend name"
+                        },
+                        "version": {
+                          "type": "string",
+                          "description": "Optional property stating backend (semver-compliant) version"
+                        }
+                      }
                     }
                   }
                 }
