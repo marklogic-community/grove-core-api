@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "This defines the baseline for middleTier-to-frontEnd Generic Search APIs for the Grove UI Toolkit.",
-    "version": "0.10.0-beta",
+    "version": "1.0.0",
     "title": "Grove Middle-tier Generic Search API",
     "license": {
       "name": "Apache-2.0",
@@ -11,7 +11,7 @@
     }
   },
   "paths": {
-    "/search/{type}": {
+    "/api/search/{type}": {
       "post": {
         "description": "Search all objects of type `{type}`, returning all available search facets with values as well as matching items. The definition of what the type means is up to the application.",
         "parameters": [
@@ -51,7 +51,7 @@
         }
       }
     },
-    "/search/{type}/facets": {
+    "/api/search/{type}/facets": {
       "post": {
         "description": "Search all objects of type `{type}`, returning all available search facets with values. The definition of what the type means is up to the application.",
         "parameters": [
@@ -91,7 +91,7 @@
         }
       }
     },
-    "/search/{type}/results": {
+    "/api/search/{type}/results": {
       "post": {
         "description": "Search all objects of type `{type}`, returning matching items. The definition of what the type means is up to the application.",
         "parameters": [

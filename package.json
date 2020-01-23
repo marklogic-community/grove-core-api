@@ -1,10 +1,13 @@
 {
   "name": "@marklogic-community/grove-core-api",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.2",
   "description": "core OpenAPI 3.0 specifications for Grove-compliant middle-tiers",
   "main": "index.js",
   "scripts": {
-    "test": "swagger-cli validate spec/auth-api.json; swagger-cli validate spec/search-api.json; swagger-cli validate spec/crud-api.json"
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "test": "swagger-cli validate spec/ping-api.json; swagger-cli validate spec/auth-api.json; swagger-cli validate spec/search-api.json; swagger-cli validate spec/crud-api.json",
+    "test-api": "jest"
   },
   "repository": {
     "type": "git",
@@ -34,7 +37,18 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "swagger-cli": "^2.1.1"
+    "dotenv": "^8.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "frisby": "^2.1.0",
+    "jest": "^25.1.0",
+    "prettier": "^1.13.7",
+    "swagger-cli": "^2.2.0"
+  },
+  "engines": {
+    "node": ">=8.10.0"
   },
   "bugs": {
     "url": "https://github.com/marklogic-community/grove-core-api/issues"
