@@ -131,13 +131,53 @@
         }
       }
     },
-    "/suggest/{type}/facets/{facet}" : {
+    "/suggest/{type}" : {
       "post" : {
-        "description" : "Suggest all facet values of type `{type}`, returning all available values. The definition of what the type means is up to the application.",
+        "description" : "Provide suggestions for search values for type `{type}` across all search facets, and other sources for the type, taking provided constraints into consideration",
         "parameters" : [ {
           "name" : "type",
           "in" : "path",
-          "description" : "The type against which you are searching. It will typically correspond to a set of searchOptions known to the middle-tier. Convention is to use a pseudo-type of 'all' for generic search-and-discovery applications.",
+          "description" : "The type against which you are searching.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuggestRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SuggestResult"
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "../common/responses.json#/Responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/suggest/{type}/facets/{facet}" : {
+      "post" : {
+        "description" : "Provide suggestions for search values for facet `{facet}` of type `{type}`, taking provided constraints into consideration.",
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "path",
+          "description" : "The type against which you are searching.",
           "required" : true,
           "style" : "simple",
           "explode" : false,
@@ -170,7 +210,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/FacetSuggestions"
+                  "$ref" : "#/components/schemas/SuggestResult"
                 }
               }
             }
@@ -204,7 +244,7 @@
               },
               "pageLength": {
                 "type": "integer",
-                "description": "result to start on for pagination",
+                "description": "number of results to include for one page",
                 "minimum": 1,
                 "default": 10
               }
@@ -222,15 +262,20 @@
           "options": {
             "type": "object",
             "properties": {
+              "partial": {
+                "type": "string",
+                "description": "partial value used as 'seed' for suggestion values",
+                "default": ""
+              },
               "start": {
                 "type": "integer",
-                "description": "result to start on for pagination",
+                "description": "index of first suggestion value to return",
                 "minimum": 1,
                 "default": 1
               },
               "pageLength": {
                 "type": "integer",
-                "description": "result to start on for pagination",
+                "description": "number of suggestion values to return",
                 "minimum": 1,
                 "default": 10
               }
@@ -897,7 +942,7 @@
         "additionalProperties": true
       },
       "AnyValue": {},
-      "FacetSuggestions" : {
+      "SuggestResult" : {
         "type" : "object",
         "properties" : {
           "suggestions" : {
