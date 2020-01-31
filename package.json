@@ -7,7 +7,11 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "test": "swagger-cli validate spec/ping-api.json; swagger-cli validate spec/auth-api.json; swagger-cli validate spec/search-api.json; swagger-cli validate spec/crud-api.json",
-    "test-api": "jest"
+    "test-auth": "jest -i tests/api/auth.spec.js",
+    "test-crud": "jest -i tests/api/crud.spec.js",
+    "test-ping": "jest -i tests/api/ping.spec.js",
+    "test-search": "jest -i tests/api/search.spec.js",
+    "test-api": "jest -i"
   },
   "repository": {
     "type": "git",

@@ -215,7 +215,7 @@ describe('/api/crud/all/123', () => {
       });
   });
 
-  it('cannot DELETE twice', function() {
+  it('silently ignores double DELETE', function() {
     // ML Rest-api is known to ignore rather than fail
     return frisby
       .fetch(groveBaseUrl + 'api/crud/all/123', {
@@ -224,6 +224,6 @@ describe('/api/crud/all/123', () => {
           cookie: cookie
         }
       })
-      .expect('status', 404);
+      .expect('status', 204);
   });
 });
