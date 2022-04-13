@@ -39,8 +39,5 @@
   "bugs": {
     "url": "https://github.com/marklogic-community/grove-core-api/issues"
   },
-  "homepage": "https://github.com/marklogic-community/grove-core-api#readme",
-  "dependencies": {
-    "minimist": "^1.2.6"
-  }
+  "homepage": "https://github.com/marklogic-community/grove-core-api#readme"
 }
