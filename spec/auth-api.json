@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "This defines the baseline for middleTier-to-frontEnd Authentication APIs for the Grove UI Toolkit.",
-    "version": "0.10.0-beta",
+    "version": "1.0.0",
     "title": "Grove Middle-tier Authentication API",
     "license": {
       "name": "Apache-2.0",
@@ -11,7 +11,7 @@
     }
   },
   "paths": {
-    "/auth/login": {
+    "/api/auth/login": {
       "post": {
         "description": "Authenticate credentials, and open new user session.",
         "parameters": [],
@@ -92,7 +92,7 @@
         }
       }
     },
-    "/auth/logout": {
+    "/api/auth/logout": {
       "post": {
         "description": "Flush user session associated with current browser",
         "parameters": [],
@@ -127,7 +127,7 @@
         }
       }
     },
-    "/auth/status": {
+    "/api/auth/status": {
       "get": {
         "description": "Verify session status",
         "parameters": [],
@@ -172,7 +172,7 @@
         }
       }
     },
-    "/auth/profile": {
+    "/api/auth/profile": {
       "get": {
         "description": "Profile of the current user",
         "parameters": [],

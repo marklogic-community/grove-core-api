@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "This defines the baseline for middleTier-to-frontEnd Generic Search APIs for the Grove UI Toolkit.",
-    "version": "0.10.0-beta",
+    "version": "1.0.0",
     "title": "Grove Middle-tier Generic Search API",
     "license": {
       "name": "Apache-2.0",
@@ -11,7 +11,7 @@
     }
   },
   "paths": {
-    "/search/{type}": {
+    "/api/search/{type}": {
       "post": {
         "description": "Search all objects of type `{type}`, returning all available search facets with values as well as matching items. The definition of what the type means is up to the application.",
         "parameters": [
@@ -51,7 +51,7 @@
         }
       }
     },
-    "/search/{type}/facets": {
+    "/api/search/{type}/facets": {
       "post": {
         "description": "Search all objects of type `{type}`, returning all available search facets with values. The definition of what the type means is up to the application.",
         "parameters": [
@@ -91,7 +91,7 @@
         }
       }
     },
-    "/search/{type}/results": {
+    "/api/search/{type}/results": {
       "post": {
         "description": "Search all objects of type `{type}`, returning matching items. The definition of what the type means is up to the application.",
         "parameters": [
@@ -130,6 +130,96 @@
           }
         }
       }
+    },
+    "/suggest/{type}" : {
+      "post" : {
+        "description" : "Provide suggestions for search values for type `{type}` across all search facets, and other sources for the type, taking provided constraints into consideration",
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "path",
+          "description" : "The type against which you are searching.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuggestRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SuggestResult"
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "../common/responses.json#/Responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/suggest/{type}/facets/{facet}" : {
+      "post" : {
+        "description" : "Provide suggestions for search values for facet `{facet}` of type `{type}`, taking provided constraints into consideration.",
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "path",
+          "description" : "The type against which you are searching.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "facet",
+          "in" : "path",
+          "description" : "The facet name against which the suggestions will be based..",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuggestRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SuggestResult"
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "../common/responses.json#/Responses/Unauthorized"
+          }
+        }
+      }
     }
   },
   "security": [],
@@ -154,7 +244,38 @@
               },
               "pageLength": {
                 "type": "integer",
-                "description": "result to start on for pagination",
+                "description": "number of results to include for one page",
+                "minimum": 1,
+                "default": 10
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "SuggestRequest": {
+        "type": "object",
+        "properties": {
+          "filters": {
+            "$ref": "#/components/schemas/CombinedFilter"
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "partial": {
+                "type": "string",
+                "description": "partial value used as 'seed' for suggestion values",
+                "default": ""
+              },
+              "start": {
+                "type": "integer",
+                "description": "index of first suggestion value to return",
+                "minimum": 1,
+                "default": 1
+              },
+              "pageLength": {
+                "type": "integer",
+                "description": "number of suggestion values to return",
                 "minimum": 1,
                 "default": 10
               }
@@ -246,7 +367,10 @@
                     },
                     {
                       "not": {
-                        "or": [
+                        "type": "selection",
+                        "constraint": "occupationCategory",
+                        "mode": "or",
+                        "value": [
                           "marketing",
                           "support"
                         ]
@@ -817,7 +941,18 @@
         },
         "additionalProperties": true
       },
-      "AnyValue": {}
+      "AnyValue": {},
+      "SuggestResult" : {
+        "type" : "object",
+        "properties" : {
+          "suggestions" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
     },
     "securitySchemes": {}
   }
